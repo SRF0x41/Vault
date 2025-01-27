@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class Client {
     private String jdbcURL = "jdbc:mysql://localhost:3306/fileIndex"; // Replace with your DB URL
     private String username = "root"; // Replace with your username
-    private String password = "kekito26"; // Replace with your password
+    private String password;
 
     private Connection connection = null;
     private Statement statement = null;
@@ -40,6 +40,11 @@ public class Client {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setPassword(String pas){
+        password = pas;
+
     }
 
     public void close(){

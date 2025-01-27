@@ -1,15 +1,19 @@
 package com.srf;
 
-/**
- * Hello world!
- *
- */
+import java.util.Scanner;
+
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Scanner password_input = new Scanner(System.in);
+        System.out.println("Enter database password");
+        String password = password_input.nextLine();
+
+
         Client client = new Client();
+        client.setPassword(password);
         client.close();
     }
 }
