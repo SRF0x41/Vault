@@ -10,6 +10,7 @@ public class App
         Scanner password_input = new Scanner(System.in);
         System.out.println("Enter database password");
         String password = password_input.nextLine();
+        password_input.close();
 
 
         Client client = new Client();
