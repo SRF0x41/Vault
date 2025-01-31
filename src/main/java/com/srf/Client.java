@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+
+
 public class Client {
     private String jdbcURL = "jdbc:mysql://localhost:3306/fileIndex"; // Replace with your DB URL
     private String username = "root"; // Replace with your username
@@ -24,7 +26,7 @@ public class Client {
             System.out.println("Connected to the database!");
 
             // Create a statement
-            statement = connection.createStatement();
+            //statement = connection.createStatement();
 
             // Execute a query
             // String sql = "SELECT id, name, email FROM users";
@@ -43,10 +45,33 @@ public class Client {
         }
     }
 
-    public void setPassword(String pas){
-        password = pas;
+    /* Notes
+     * sql structure
+     * USE fileIndex;
+        CREATE TABLE file_index(
+        -- This is the non normalized table that serves as the main file index
+        -- possible data, numerical id, file name, size of file, keywords, full text data (i feel like i should ommit this)
+        file_id INT PRIMARY KEY AUTO_INCREMENT,
+        file_size INT,
+        file_extension VARCHAR(50)
 
+); 
+     */
+
+    public void sendQuery(String q){
+        // in the future dont let anyone directly input data to the server
+        try{
+            statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(q);
+            while (result.next()){
+                System.err.println("f");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
+
+    
 
     public void close(){
         try {

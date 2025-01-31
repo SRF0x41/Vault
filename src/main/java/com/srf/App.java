@@ -7,5 +7,8 @@ public class App
     {
         Client client = new Client();
         client.close();
+
+        FSearch searchAll = new FSearch();
+        searchAll.traverseAll();
     }
 }
