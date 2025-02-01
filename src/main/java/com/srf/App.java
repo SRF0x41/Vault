@@ -9,6 +9,7 @@ public class App
         client.close();
 
         FSearch searchAll = new FSearch();
-        searchAll.traverseAll();
+        //searchAll.traverseDirectory(args[0]);
+        searchAll.traverseDirectory("/Users/sergiorodriguez/Desktop");
     }
 }

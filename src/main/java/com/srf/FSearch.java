@@ -12,7 +12,7 @@ public class FSearch{
         traverseDir(baseDir);
     }
 
-    public void traverseAll(){
+    private void traverseAll(){
         File rootDir = new File("/");
         traverseDir(rootDir);
     }
