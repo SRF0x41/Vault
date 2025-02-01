@@ -10,6 +10,6 @@ public class App
 
         FSearch searchAll = new FSearch();
         //searchAll.traverseDirectory(args[0]);
-        searchAll.traverseDirectory("/Users/sergiorodriguez/Desktop");
+        System.err.println(searchAll.traverseDirectory("/Users/sergiorodriguez/Desktop"));
     }
 }
