@@ -37,7 +37,11 @@ public class FSearch{
             if (files != null) {
                 for (File file : files) {
                     // Print file/directory path
-                    // System.out.println(file.getAbsolutePath());
+                    if(file.isFile()){
+                        System.out.println("File"+file.getAbsolutePath());
+                    } else {
+                        System.out.println("Dir "+file.getAbsolutePath());
+                    }
 
                     // If it's a directory, recurse into it
                     if (file.isDirectory()) {
