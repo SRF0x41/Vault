@@ -19,27 +19,10 @@ public class Client {
     public Client(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-
             // Establish connection
             System.out.println(password);
             connection = DriverManager.getConnection(jdbcURL, username, password);
             System.out.println("Connected to the database!");
-
-            // Create a statement
-            //statement = connection.createStatement();
-
-            // Execute a query
-            // String sql = "SELECT id, name, email FROM users";
-            // resultSet = statement.executeQuery(sql);
-
-            // Process the results
-            /*while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
-
-                System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email);
-            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +47,6 @@ public class Client {
      */
 
     public void sendQuery_Query(String q){
-        // in the future dont let anyone directly input data to the server
         try{
             statement = connection.createStatement();
             result = statement.executeQuery(q);
@@ -93,20 +75,9 @@ public class Client {
     public void DROP_FILE_INDEX(){
         sendQuery_Update("DROP TABLE file_Index");
     }
-    
-      
 
     public void close(){
         try {
             // Close resources
             if (result != null) result.close();
-            if (statement != null) statement.close();
-            if (connection != null) connection.close();
-            System.out.println("Closed database connection");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    
-}
+            if (state
