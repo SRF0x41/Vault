@@ -73,36 +73,4 @@ public class Client {
                 int file_size = result.getInt("file_size");
                 String file_name = result.getString("file_name");
                 String file_extension = result.getString("file_extension");
-                String file_path = result.getString("file_path");
-                String file_keywords = result.getString("file_keyword");
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void sendQuery_Update(String q){
-        try{
-            statement = connection.createStatement();
-            int result = statement.executeUpdate(q);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    
-      
-
-    public void close(){
-        try {
-            // Close resources
-            if (result != null) result.close();
-            if (statement != null) statement.close();
-            if (connection != null) connection.close();
-            System.out.println("Closed database connection");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    
-}
+                String file_path 
