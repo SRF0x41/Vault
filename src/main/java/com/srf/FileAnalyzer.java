@@ -4,8 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class FileAnalyzer{
 
@@ -28,8 +33,39 @@ public class FileAnalyzer{
      */
 
     private static final HashSet<String> stopWords = new HashSet<>();
+
+    static {
+        // Stop words hashset is used by all instances
+
+        String filePath = "/Users/sergiorodriguez/Desktop/dev/git_repos/Vault/vault/src/main/java/com/srf/stop_words.txt"; 
+        File file = new File(filePath);
+        System.out.println("Looking for file at: " + file.getAbsolutePath());
+        System.out.println("File exists: " + file.exists());
+
+        
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(filePath)); // Open the file for reading
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stopWords.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //if (reader != null) {
+                reader.close(); 
+                //}
+            } catch (IOException e) {
+                e.printStackTrace(); 
+            }
+        }
+    }
    
     public FileAnalyzer(){
+
+        //System.out.println(stopWords);
         
     }
 
@@ -40,6 +76,8 @@ public class FileAnalyzer{
         String file_name = line.getName().replace("'", "''");
         String file_extension = pullExtension(file_name);
         String file_keywords = "";
+        pullKeywords(line);
+
 
         String query = "INSERT INTO file_Index (file_size, file_name, file_extension, file_path, file_keyword)";
         String values = "VALUES ("+file_size+",'"+file_name+"','"+file_extension+"','"+file_path+"','"+file_keywords+"')";
@@ -61,10 +99,10 @@ public class FileAnalyzer{
 
         HashMap<String,Integer> word_frequency = new HashMap<>();
 
-        String filePath = "stop_words.txt"; 
+        
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(filePath)); // Open the file for reading
+            reader = new BufferedReader(new FileReader(file_path)); // Open the file for reading
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] words = line.split(" ");
@@ -89,11 +127,26 @@ public class FileAnalyzer{
                 e.printStackTrace(); 
             }
         }
-
-        
         return "";
-
     }
+
+    private HashMap<String,Integer> sortHashMap_Frequency(HashMap<String,Integer> word_frequency){
+       List<Map.Entry<String, Integer>> list = new ArrayList<>(word_frequency.entrySet());
+
+        // Sort the list in descending order based on values
+        list.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+
+        // Store the sorted entries in a LinkedHashMap to maintain order
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        sortedMap.forEach((key, value) -> System.out.println(key + " -> " + value));
+
+        return null;
+    }
+
+    
    
 
     private String pullExtension(String name){
@@ -121,29 +174,7 @@ public class FileAnalyzer{
 
 
 
-    static {
-        // Stop words hashset is used by all instances
-
-        String filePath = "stop_words.txt"; 
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(filePath)); // Open the file for reading
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stopWords.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close(); 
-                }
-            } catch (IOException e) {
-                e.printStackTrace(); 
-            }
-        }
-    }
+    
 
 
 
