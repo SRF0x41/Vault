@@ -80,4 +80,11 @@ public class Client {
         try {
             // Close resources
             if (result != null) result.close();
-            if (state
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+            System.out.println("Closed database connection");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

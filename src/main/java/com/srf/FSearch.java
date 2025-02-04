@@ -50,4 +50,29 @@ public class FSearch{
         }
     }
 
-    priv
+    private static void traverseDir(File dir, List<File> all_files) {
+        // Check if the directory exists and is actually a directory
+        if (dir != null && dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            List<File> asList = Arrays.asList(files);
+            all_files.addAll(asList);
+            
+
+            if (files != null) {
+                for (File file : files) {
+                    // Print file/directory path
+                    /*if(file.isFile()){
+                        System.out.println("File"+file.getAbsolutePath());
+                    } else {
+                        System.out.println("Dir "+file.getAbsolutePath());
+                    }*/
+
+                    // If it's a directory, recurse into it
+                    if (file.isDirectory()) {
+                        traverseDir(file, all_files);
+                    }
+                }
+            }
+        }
+    }
+}
