@@ -1,4 +1,5 @@
 com/srf/App.class
+com/srf/UserSearch.class
 com/srf/FSearch.class
 com/srf/FileAnalyzer.class
 com/srf/Client.class

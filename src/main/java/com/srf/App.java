@@ -1,14 +1,20 @@
 package com.srf;
 
-import java.io.File;
-
 public class App 
 {
     public static void main( String[] args )
     {
         Client client = new Client();
         try {
-            FSearch searchAll = new FSearch();
-            File dirSergio = new File("/Users/sergiorodriguez/Desktop");
+            String dirSergio = "/Users/sergiorodriguez/Desktop";
+            FSearch searchAll = new FSearch(dirSergio);
             FileAnalyzer fa = new FileAnalyzer();
-            searchAll.searchDir_toSQ
+            searchAll.searchDir_toSQL(client, fa);
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            // Return gracefully
+            client.close();
+        }
+    }
+}

@@ -6,10 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FSearch{
-    
-
-    public FSearch(){
-
+    private File base_dir;
+    public FSearch(String file_path){
+        base_dir = new File(file_path);
     }
 
 
@@ -26,8 +25,8 @@ public class FSearch{
         traverseDir(rootDir, allFiles);
     }
 
-    public void searchDir_toSQL(File dir, Client client, FileAnalyzer fa){
-        traverseDir_toSQL(dir,client, fa);
+    public void searchDir_toSQL(Client client, FileAnalyzer fa){
+        traverseDir_toSQL(base_dir, client, fa);
     }
     private static void traverseDir_toSQL(File dir, Client client, FileAnalyzer fa) {
 
@@ -40,6 +39,7 @@ public class FSearch{
                     if(file.isFile()){
                         String query = fa.fileAtributes_toSQLQuery(file);
                         client.sendQuery_Update(query);
+                        System.out.println(file.getAbsolutePath());
                     }
                     // If it's a directory, recurse into it
                     if (file.isDirectory()) {
@@ -50,4 +50,29 @@ public class FSearch{
         }
     }
 
-    priv
+    private static void traverseDir(File dir, List<File> all_files) {
+        // Check if the directory exists and is actually a directory
+        if (dir != null && dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            List<File> asList = Arrays.asList(files);
+            all_files.addAll(asList);
+            
+
+            if (files != null) {
+                for (File file : files) {
+                    // Print file/directory path
+                    /*if(file.isFile()){
+                        System.out.println("File"+file.getAbsolutePath());
+                    } else {
+                        System.out.println("Dir "+file.getAbsolutePath());
+                    }*/
+
+                    // If it's a directory, recurse into it
+                    if (file.isDirectory()) {
+                        traverseDir(file, all_files);
+                    }
+                }
+            }
+        }
+    }
+}
