@@ -14,7 +14,7 @@ public class Client {
 
     private Connection connection = null;
     private Statement statement = null;
-    private ResultSet resultSet = null;
+    private ResultSet result = null;
     
     public Client(){
         try {
@@ -46,25 +46,35 @@ public class Client {
     }
 
     /* Notes
-     * sql structure
-     * USE fileIndex;
-        CREATE TABLE file_index(
+     CREATE TABLE file_index(
         -- This is the non normalized table that serves as the main file index
-        -- possible data, numerical id, file name, size of file, keywords, full text data (i feel like i should ommit this)
+        -- possible data, numerical id, file name, size of file, keywords, 
         file_id INT PRIMARY KEY AUTO_INCREMENT,
         file_size INT,
-        file_extension VARCHAR(50)
+        file_name VARCHAR(255),
+        file_extension VARCHAR(50),
+        file_path VARCHAR(1024),
 
-); 
+
+        -- File data atributes
+
+        -- average word is 5 character, 100 key words with 100 delimeters
+        file_keyword VARCHAR(600)
+        );
      */
 
     public void sendQuery(String q){
         // in the future dont let anyone directly input data to the server
         try{
             statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(q);
+            result = statement.executeQuery(q);
             while (result.next()){
-                System.err.println("f");
+                int file_id = result.getInt("file_id");
+                int file_size = result.getInt("file_size");
+                String file_name = result.getString("file_name");
+                String file_extension = result.getString("file_extension");
+                String file_path = result.getString("file_path");
+                String file_keywords = result.getString("file_keyword");
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -72,11 +82,12 @@ public class Client {
     }
 
     
+      
 
     public void close(){
         try {
             // Close resources
-            if (resultSet != null) resultSet.close();
+            if (result != null) result.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         } catch (Exception e) {

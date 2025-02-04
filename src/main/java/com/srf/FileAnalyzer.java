@@ -1,5 +1,7 @@
 package com.srf;
 
+import java.io.File;
+
 public class FileAnalyzer{
 
     /*
@@ -19,9 +21,38 @@ public class FileAnalyzer{
         file_keyword VARCHAR(600)
         );
      */
+    private String file_size;
+    private String file_path;
+    private String file_name;
+    private String file_extension;
+    private String file_keywords;
+
     public FileAnalyzer(){
 
     }
+
+    public void collectAtributes(File line){
+        file_path = line.getAbsolutePath();
+        file_size = convertBytes(line.length()); // this is bytes
+
+    }
+
+    public String convertBytes(long bytes){
+        double d_bytes = (double) bytes;
+        String[] unitAbv = {"B","KB","MB","GB","TB","PB"};
+        int size = 0;
+        while(d_bytes > 1000){
+            d_bytes /= 1024;
+            size += 1;
+        }
+        if(d_bytes %1 == 0){
+            return (int)d_bytes +" "+unitAbv[size];
+        }
+        String formatted = String.format("%.2f", d_bytes);
+        return String.format("%.2f", d_bytes) +" "+ unitAbv[size];
+    }
+
+    
 
     
 
