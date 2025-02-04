@@ -40,11 +40,11 @@ public class FSearch{
                     if(file.isFile()){
                         //System.out.println("File"+file.getAbsolutePath());
                         String query = fa.fileAtributes_toSQLQuery(file);
-                        //client.sendQuery(query);
-                        System.out.println(query);
+                        client.sendQuery_Update(query);
+                        //System.out.println(query);
 
                     } else {
-                        System.out.println("Dir "+file.getAbsolutePath());
+                        //System.out.println("Dir "+file.getAbsolutePath());
                     }
 
                     // If it's a directory, recurse into it

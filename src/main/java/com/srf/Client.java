@@ -63,7 +63,7 @@ public class Client {
         );
      */
 
-    public void sendQuery(String q){
+    public void sendQuery_Query(String q){
         // in the future dont let anyone directly input data to the server
         try{
             statement = connection.createStatement();
@@ -81,6 +81,14 @@ public class Client {
         }
     }
 
+    public void sendQuery_Update(String q){
+        try{
+            statement = connection.createStatement();
+            int result = statement.executeUpdate(q);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     
       
 
@@ -90,6 +98,7 @@ public class Client {
             if (result != null) result.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
+            System.out.println("Closed database connection");
         } catch (Exception e) {
             e.printStackTrace();
         }

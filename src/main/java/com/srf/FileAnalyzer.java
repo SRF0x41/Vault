@@ -5,11 +5,11 @@ import java.io.File;
 public class FileAnalyzer{
 
     /*
-     * CREATE TABLE file_Index(
+     CREATE TABLE file_Index(
     -- This is the non normalized table that serves as the main file index
     -- possible data, numerical id, file name, size of file, keywords, 
     file_id INT PRIMARY KEY AUTO_INCREMENT,
-    file_size INT,
+    file_size BIGINT,
     file_name VARCHAR(255),
     file_extension VARCHAR(50),
     file_path VARCHAR(1024),
@@ -28,14 +28,14 @@ public class FileAnalyzer{
 
 
     public String fileAtributes_toSQLQuery(File line){
-        String file_size = convertBytes(line.length()); // this is bytes
+        long file_size = line.length(); //convertBytes(line.length()); // this is bytes
         String file_path = line.getAbsolutePath();
         String file_name = line.getName();
         String file_extension = pullExtension(file_name);
         String file_keywords = "";
 
-        String query = "INSERT INTO your_table (file_size, file_name, file_extension, file_path, file_keyword)";
-        String values = "VALUES ("+file_size+","+file_path+","+file_extension+","+file_path+","+file_keywords+")";
+        String query = "INSERT INTO file_Index (file_size, file_name, file_extension, file_path, file_keyword)";
+        String values = "VALUES ("+file_size+",'"+file_name+"','"+file_extension+"','"+file_path+"','"+file_keywords+"')";
         return query +" "+values;
     }
 
@@ -46,9 +46,7 @@ public class FileAnalyzer{
         }
         return "";
     }
-
-
-
+    
     private String convertBytes(long bytes){
         double d_bytes = (double) bytes;
         String[] unitAbv = {"B","KB","MB","GB","TB","PB"};
