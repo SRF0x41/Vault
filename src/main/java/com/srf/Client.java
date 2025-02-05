@@ -50,13 +50,17 @@ public class Client {
         try{
             statement = connection.createStatement();
             result = statement.executeQuery(q);
+
             while (result.next()){
                 int file_id = result.getInt("file_id");
-                int file_size = result.getInt("file_size");
+                long file_size = result.getInt("file_size");
                 String file_name = result.getString("file_name");
                 String file_extension = result.getString("file_extension");
                 String file_path = result.getString("file_path");
                 String file_keywords = result.getString("file_keyword");
+                
+                String comiled_line = ""+file_id+" "+file_size+" "+file_name+" "+file_extension+" "+file_path+" "+file_keywords;
+                System.out.println(comiled_line);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -64,6 +68,23 @@ public class Client {
     }
 
     public void fuzzySearch(String target_value){
+        /* SQL like statement usage 
+         *  SELECT * FROM Customers
+            WHERE city LIKE '%L%';
+         */
+
+        String query = "SELECT * FROM file_Index WHERE file_name LIKE '%"+target_value+"%' ;";
+        // Search file name first values like target value
+        sendQuery_Query(query);
+
+        // Search file extension next like the target value
+
+        // Search file path
+        
+        // Search keywords
+
+
+        // Calculate a rank on order of highest repeating keywords
 
     }
 

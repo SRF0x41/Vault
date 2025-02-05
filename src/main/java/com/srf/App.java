@@ -13,10 +13,11 @@ public class App
             //FileAnalyzer fa = new FileAnalyzer();
             //searchAll.searchDir_toSQL(client, fa);
             Scanner scanner = new Scanner(System.in);
-            UserSearch user = new UserSearch();
-            while (true) { 
-                    String userPrompt = scanner.nextLine();
-                    user.userPrompt(userPrompt);
+            UserSearch user = new UserSearch(client);
+            String text_prompt = "";
+            while (!text_prompt.equals("exit")) { 
+                    text_prompt = scanner.nextLine();
+                    user.userPrompt_fuzzySearch(text_prompt);
             }
         } catch (Exception e) {
             System.err.println(e);
