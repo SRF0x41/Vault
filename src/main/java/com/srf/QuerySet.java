@@ -23,6 +23,10 @@ public class QuerySet {
         master_set.add(c_line);
     }
 
+    public ArrayList<ArrayList<Object>> getMasterSet(){
+        return master_set;
+    };
+
     public void print(){
         for(ArrayList<Object> e : master_set){
             System.out.println(e.toString());

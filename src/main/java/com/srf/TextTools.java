@@ -22,10 +22,7 @@ public class TextTools {
 
         String filePath = "/Users/sergiorodriguez/Desktop/dev/git_repos/Vault/vault/src/main/java/com/srf/stop_words.txt"; 
         File file = new File(filePath);
-        System.out.println("Looking for file at: " + file.getAbsolutePath());
-        System.out.println("File exists: " + file.exists());
-
-        
+    
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(filePath)); // Open the file for reading
@@ -50,7 +47,7 @@ public class TextTools {
 
     }
 
-    
+
 
 
 
