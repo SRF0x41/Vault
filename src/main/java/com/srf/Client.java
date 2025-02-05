@@ -72,4 +72,58 @@ public class Client {
 
                 query_result.add(compiled_line);
                 
-                //
+                //String comiled_line = ""+file_id+" " +file_size+" "+file_name+" "+file_extension+" "+file_path+" "+file_keywords;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return query_result;
+    }
+
+    public QuerySet fuzzySearch(String target_value){
+        /* SQL like statement usage 
+         *  SELECT * FROM Customers
+            WHERE city LIKE '%L%';
+         */
+
+        String query = "SELECT * FROM file_Index WHERE file_name LIKE '%"+target_value+"%' ;";
+        // Search file name first values like target value
+        QuerySet q_result = new QuerySet(sendQuery_Query(query));
+        return q_result;
+
+        // Search file extension next like the target value
+
+        // Search file path
+        
+        // Search keywords
+
+
+        // Calculate a rank on order of highest repeating keywords
+
+    }
+
+    public void sendQuery_Update(String q){
+        try{
+            statement = connection.createStatement();
+            int result = statement.executeUpdate(q);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void DROP_FILE_INDEX(){
+        sendQuery_Update("DROP TABLE file_Index");
+    }
+
+    public void close(){
+        try {
+            // Close resources
+            if (result != null) result.close();
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+            System.out.println("Closed database connection");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
