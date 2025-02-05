@@ -29,11 +29,11 @@ public class Client {
     }
 
     /* Notes
-     CREATE TABLE file_index(
+     CREATE TABLE file_Index(
         -- This is the non normalized table that serves as the main file index
         -- possible data, numerical id, file name, size of file, keywords, 
         file_id INT PRIMARY KEY AUTO_INCREMENT,
-        file_size INT,
+        file_size BIGINT,
         file_name VARCHAR(255),
         file_extension VARCHAR(50),
         file_path VARCHAR(1024),
@@ -42,7 +42,7 @@ public class Client {
         -- File data atributes
 
         -- average word is 5 character, 100 key words with 100 delimeters
-        file_keyword VARCHAR(600)
+        file_keyword VARCHAR(5000)
         );
      */
 
@@ -61,6 +61,10 @@ public class Client {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void fuzzySearch(String target_value){
+
     }
 
     public void sendQuery_Update(String q){
