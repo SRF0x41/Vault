@@ -20,9 +20,9 @@ public class TextTools {
     static {
         // Stop words hashset is used by all instances
 
-        String filePath = "/Users/sergiorodriguez/Desktop/dev/git_repos/Vault/vault/src/main/java/com/srf/stop_words.txt"; 
+        String filePath = "/Users/sergiorodriguez/Desktop/dev/git_repos/Vault/vault/src/main/java/com/srf/stop_words.txt";
         File file = new File(filePath);
-    
+
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(filePath)); // Open the file for reading
@@ -34,30 +34,26 @@ public class TextTools {
             e.printStackTrace();
         } finally {
             try {
-                //if (reader != null) {
-                reader.close(); 
-                //}
+                // if (reader != null) {
+                reader.close();
+                // }
             } catch (IOException e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
         }
     }
 
-    public TextTools(){
+    public TextTools() {
 
     }
 
-
-
-
-
-    public LinkedHashMap<String,Integer> pullKeywords(String line){
-        HashMap<String,Integer> word_frequency = new HashMap<>();
+    public LinkedHashMap<String, Integer> pullKeywords(String line) {
+        HashMap<String, Integer> word_frequency = new HashMap<>();
         String[] words = line.split(" ");
-        for(String w : words){
-            if(word_frequency.containsKey(w) && validateKeyword(w)){
+        for (String w : words) {
+            if (word_frequency.containsKey(w) && validateKeyword(w)) {
                 word_frequency.put(w, word_frequency.get(w) + 1);
-            }else{
+            } else {
                 word_frequency.put(w, 1);
             }
         }
@@ -77,16 +73,16 @@ public class TextTools {
         return sortedMap;
     }
 
-    // Validate keyword 
-    private Boolean validateKeyword(String word){
+    // Validate keyword
+    private Boolean validateKeyword(String word) {
         Boolean[] checks = {
-            !stopWords.contains(word),
-            word.length() >= MINIMUM_KEYWORD_LENGTH,
-            word.length() <= MAXIMUM_KEYWORD_LENGTH,
-            word.matches("^[\\x20-\\x7E]*$")
+                !stopWords.contains(word),
+                word.length() >= MINIMUM_KEYWORD_LENGTH,
+                word.length() <= MAXIMUM_KEYWORD_LENGTH,
+                word.matches("^[\\x20-\\x7E]*$")
         };
-        for(Boolean b : checks){
-            if(!b){
+        for (Boolean b : checks) {
+            if (!b) {
                 return false;
             }
         }
