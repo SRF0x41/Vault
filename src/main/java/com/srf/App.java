@@ -49,9 +49,10 @@ public class App
             
             button.addActionListener(e -> {
                 String text = textField.getText();  // Get text from the field
-                user_search.userPrompt_fuzzySearch(text);
+                //user_search.userPrompt_fuzzySearch(text);
+                user_search.userPrompt_hfq_Search(text);
                 SwingUtilities.invokeLater(() -> {
-                    search_results.setText(user_search.longLineText());
+                    //search_results.setText(user_search.longLineText());
                 });
             });
             frame.add(label);

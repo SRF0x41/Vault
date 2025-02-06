@@ -7,6 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 
+/* UserSearch and client are mixing too much, separate the 
+ * Client class to only handle direcnt communication to the 
+ * sql server. Leave processing to user search.
+ */
+
+
 
 public class Client {
     private String jdbcURL = "jdbc:mysql://localhost:3306/fileIndex"; // Replace with your DB URL
@@ -48,6 +54,7 @@ public class Client {
      */
 
     public ArrayList<ArrayList<Object>> sendQuery_Query(String q){
+        /* OK */
         ArrayList<ArrayList<Object>> query_result = new ArrayList<>();
 
         try{
@@ -81,6 +88,7 @@ public class Client {
     }
 
     public QuerySet fuzzySearch(String target_value){
+        /* Obselete */
         /* SQL like statement usage 
          *  SELECT * FROM Customers
             WHERE city LIKE '%L%';
@@ -90,17 +98,42 @@ public class Client {
         // Search file name first values like target value
         QuerySet q_result = new QuerySet(sendQuery_Query(query));
         return q_result;
-
-        // Search file extension next like the target value
-
-        // Search file path
-        
-        // Search keywords
-
-
-        // Calculate a rank on order of highest repeating keywords
-
     }
+
+    /*SELECT * FROM table_name 
+    WHERE column_name REGEXP 'apple|banana|cherry'; */
+
+    public QuerySet hfq_Search(String[] target_values){
+        /*file_name VARCHAR(255),
+        file_extension VARCHAR(50),
+        file_path VARCHAR(1024), */
+        StringBuilder[] file_queries = {
+            new StringBuilder("SELECT * FROM file_Index WHERE file_name REGEXP "),
+            new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
+            new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP ")
+        };
+
+        StringBuilder regx_line = new StringBuilder("'");
+        for(String str : target_values){
+            regx_line.append(str).append("|");
+        }
+        regx_line.setCharAt(regx_line.length()-1, '\'');
+
+        //ArrayList<QuerySet> query_sets = new ArrayList<>();
+
+        int frequency_hits = 0;
+        QuerySet hfq_query_set = new QuerySet(); // this will be the hashmaped map
+
+        for(StringBuilder str : file_queries){
+            String query = "" + str + regx_line;
+            // System.out.println(query);
+            // query_sets.add(new QuerySet(sendQuery_Query(query)));
+
+
+        }
+        return null;
+    }
+
 
     public void sendQuery_Update(String q){
         try{
