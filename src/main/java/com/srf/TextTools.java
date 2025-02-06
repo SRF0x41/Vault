@@ -49,6 +49,7 @@ public class TextTools {
 
     public LinkedHashMap<String, Integer> pullKeywords(String line) {
         HashMap<String, Integer> word_frequency = new HashMap<>();
+        line = line.toLowerCase();
         String[] words = line.split(" ");
         for (String w : words) {
             if (word_frequency.containsKey(w) && validateKeyword(w)) {

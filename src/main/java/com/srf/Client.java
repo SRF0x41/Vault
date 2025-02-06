@@ -70,10 +70,10 @@ public class Client {
 
                 compiled_line.add(file_id);
                 compiled_line.add(file_size);
-                compiled_line.add(file_name);
-                compiled_line.add(file_extension);
-                compiled_line.add(file_path);
-                compiled_line.add(file_keywords);
+                compiled_line.add(file_name.toLowerCase());
+                compiled_line.add(file_extension.toLowerCase());
+                compiled_line.add(file_path.toLowerCase());
+                compiled_line.add(file_keywords.toLowerCase());
 
                 query_result.add(compiled_line);
 
