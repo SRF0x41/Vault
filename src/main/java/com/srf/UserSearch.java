@@ -36,9 +36,9 @@ public class UserSearch {
 
         StringBuilder[] file_queries_pulltext = {
                 new StringBuilder("SELECT * FROM file_Index WHERE file_name REGEXP "),
-                //new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
-                // new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP "),
-                // new StringBuilder("SELECT * FROM file_Index WHERE file_keyword REGEXP ")
+                new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
+                new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP "),
+                new StringBuilder("SELECT * FROM file_Index WHERE file_keyword REGEXP ")
         };
 
         StringBuilder regex_line = new StringBuilder();
@@ -96,13 +96,13 @@ public class UserSearch {
             for (ArrayList<Object> sql_row : tree_qset.get(i)) {
                 // get each sql row from
                 String file_name = sql_row.get(2).toString();
-                String file_path = sql_row.get(3).toString();
-                String file_keyw = sql_row.get(4).toString();
+                String file_path = sql_row.get(4).toString();
+                String file_keyw = sql_row.get(5).toString();
 
-                out.append("frq: ").append(i).append("  ");
+                //out.append("frq: ").append(i).append("  ");
                 out.append(file_name).append("\n");
                 out.append(file_path).append("\n");
-                out.append(file_keyw).append("\n");
+                out.append(file_keyw).append("\n\n");
             }
         }
         return out.toString();
