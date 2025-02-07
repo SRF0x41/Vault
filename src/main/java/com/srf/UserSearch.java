@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 public class UserSearch {
 
     private final Client client;
-    public QuerySet q_set;
+    public ArrayList<ArrayList<Object>> q_set;
 
     public UserSearch(Client c) {
         client = c;
     }
 
-    public QuerySet userPrompt_fuzzySearch(String user_prompt) {
+    public ArrayList<ArrayList<Object>> userPrompt_fuzzySearch(String user_prompt) {
         TextTools tt = new TextTools();
         String[] keywords = tt.pullKeywords(user_prompt);
         q_set = client.fuzzySearch(user_prompt);
@@ -99,7 +99,7 @@ public class UserSearch {
                 String file_path = sql_row.get(4).toString();
                 String file_keyw = sql_row.get(5).toString();
 
-                //out.append("frq: ").append(i).append("  ");
+                // out.append("frq: ").append(i).append(" ");
                 out.append(file_name).append("\n");
                 out.append(file_path).append("\n");
                 out.append(file_keyw).append("\n\n");
@@ -110,26 +110,6 @@ public class UserSearch {
     }
 
     /* Methods for writing to JTextArea */
-    public String longLineText() {
-        StringBuilder out = new StringBuilder();
-        ArrayList<ArrayList<Object>> array_q_set = q_set.getMasterSet();
-        for (ArrayList<Object> line : array_q_set) {
-            String comp = line.get(2) + "\n" + line.get(4);
-            out.append(comp + " \n\n");
-        }
-        return out.toString();
-    }
-
-    public String longLineText_HTML() {
-        StringBuilder out = new StringBuilder();
-
-        ArrayList<ArrayList<Object>> array_q_set = q_set.getMasterSet();
-        for (ArrayList<Object> line : array_q_set) {
-            String comp = line.get(2) + "\n" + line.get(4);
-            out.append(comp + " \n\n");
-        }
-        return out.toString();
-    }
 
     /*
      * CREATE TABLE file_Index(

@@ -86,7 +86,7 @@ public class Client {
         return query_result;
     }
 
-    public QuerySet fuzzySearch(String target_value) {
+    public ArrayList<ArrayList<Object>> fuzzySearch(String target_value) {
         /* Obselete */
         /*
          * SQL like statement usage
@@ -96,7 +96,7 @@ public class Client {
 
         String query = "SELECT * FROM file_Index WHERE file_name LIKE '%" + target_value + "%' ;";
         // Search file name first values like target value
-        QuerySet q_result = new QuerySet(sendQuery_Query(query));
+        ArrayList<ArrayList<Object>> q_result = sendQuery_Query(query);
         return q_result;
     }
 
@@ -104,38 +104,6 @@ public class Client {
      * SELECT * FROM table_name
      * WHERE column_name REGEXP 'apple|banana|cherry';
      */
-
-    public QuerySet hfq_Search(String[] target_values) {
-        /*
-         * file_name VARCHAR(255),
-         * file_extension VARCHAR(50),
-         * file_path VARCHAR(1024),
-         */
-        StringBuilder[] file_queries = {
-                new StringBuilder("SELECT * FROM file_Index WHERE file_name REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP ")
-        };
-
-        StringBuilder regx_line = new StringBuilder("'");
-        for (String str : target_values) {
-            regx_line.append(str).append("|");
-        }
-        regx_line.setCharAt(regx_line.length() - 1, '\'');
-
-        // ArrayList<QuerySet> query_sets = new ArrayList<>();
-
-        int frequency_hits = 0;
-        QuerySet hfq_query_set = new QuerySet(); // this will be the hashmaped map
-
-        for (StringBuilder str : file_queries) {
-            String query = "" + str + regx_line;
-            // System.out.println(query);
-            // query_sets.add(new QuerySet(sendQuery_Query(query)));
-
-        }
-        return null;
-    }
 
     public void sendQuery_Update(String q) {
         try {
