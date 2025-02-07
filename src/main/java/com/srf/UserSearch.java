@@ -1,7 +1,6 @@
 package com.srf;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -77,10 +76,11 @@ public class UserSearch {
          * keywords
          */
         int frequency = 0;
-        Pattern patern = Pattern.compile("\\b" + Arrays.toString(keywords) + "\\b", Pattern.CASE_INSENSITIVE);
+        String regex = "\\b(" + String.join("|", keywords) + ")\\b";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         for (Object str : line) {
             if (str instanceof String) {
-                Matcher matcher = patern.matcher(str.toString());
+                Matcher matcher = pattern.matcher(str.toString());
                 while (matcher.find()) {
                     frequency++;
                 }
