@@ -4,4 +4,5 @@ com/srf/FSearch.class
 com/srf/Client.class
 com/srf/App.class
 com/srf/UserSearch.class
+com/srf/TreeQuerySet.class
 com/srf/FileAnalyzer.class

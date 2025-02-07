@@ -47,7 +47,7 @@ public class TextTools {
 
     }
 
-    public LinkedHashMap<String, Integer> pullKeywords(String line) {
+    public String[] pullKeywords(String line) {
         HashMap<String, Integer> word_frequency = new HashMap<>();
         line = line.toLowerCase();
         String[] words = line.split(" ");
@@ -67,11 +67,14 @@ public class TextTools {
 
         // Store the sorted entries in a LinkedHashMap to maintain order
         LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        String[] key_words = new String[sortedMap.size()];
+        int count = 0;
         for (Map.Entry<String, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
+            key_words[count]= entry.getKey();
         }
 
-        return sortedMap;
+        return key_words;
     }
 
     // Validate keyword
@@ -90,5 +93,4 @@ public class TextTools {
         return true;
     }
 
-    // sort keywords
-}
+    // so
