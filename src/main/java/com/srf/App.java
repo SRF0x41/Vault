@@ -37,16 +37,18 @@ public class App {
             JLabel label = new JLabel("Type something: ");
 
             // Text area
-            JTextArea search_results = new JTextArea("This is some printed text.\nHere is another line.");
-            search_results.setEditable(false); // Make it non-editable
-            int text_results_width = 800;
-            int text_results_height = 500;
-            search_results.setPreferredSize(new Dimension(text_results_width, text_results_height));
+            JTextArea search_results = new JTextArea(20, 50); // (Rows, Columns)
+            search_results.setEditable(false); // Make non-editable
+
+            JScrollPane scrollPane = new JScrollPane(search_results);
+            scrollPane.setPreferredSize(new Dimension(800, 500));
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
             button.addActionListener(e -> {
                 String text = textField.getText(); // Get text from the field
                 // user_search.userPrompt_fuzzySearch(text);
-                     
+
                 SwingUtilities.invokeLater(() -> {
                     search_results.setText(user_search.hfqString(user_search.hfq_Search(text)));
                 });
@@ -55,7 +57,7 @@ public class App {
             frame.add(textField);
             frame.add(button);
 
-            frame.add(new JScrollPane(search_results));
+            frame.add(scrollPane);
 
         });
 

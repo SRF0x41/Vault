@@ -11,7 +11,6 @@ public class UserSearch {
 
     private final Client client;
     public QuerySet q_set;
-    
 
     public UserSearch(Client c) {
         client = c;
@@ -24,7 +23,7 @@ public class UserSearch {
         return q_set;
     }
 
-    public TreeMap<Integer,ArrayList<Object>> hfq_Search(String raw_user_prompt) {
+    public TreeMap<Integer, ArrayList<ArrayList<Object>>> hfq_Search(String raw_user_prompt) {
 
         // This aproach might be bad because the regex for searhcing the sql return
         // short circuits at the first sight of a keyword, therefore i can really check
@@ -39,8 +38,8 @@ public class UserSearch {
         StringBuilder[] file_queries_pulltext = {
                 new StringBuilder("SELECT * FROM file_Index WHERE file_name REGEXP "),
                 //new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
-                //new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP "),
-                //new StringBuilder("SELECT * FROM file_Index WHERE file_keyword REGEXP ")
+                // new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP "),
+                // new StringBuilder("SELECT * FROM file_Index WHERE file_keyword REGEXP ")
         };
 
         StringBuilder regex_line = new StringBuilder();
@@ -51,7 +50,7 @@ public class UserSearch {
         // regex line should be keyword1|keyword2|keyword3
         regex_line.deleteCharAt(regex_line.length() - 1);
 
-        TreeMap<Integer, ArrayList<Object>> tree_qset = new TreeMap<>(Collections.reverseOrder());
+        TreeMap<Integer, ArrayList<ArrayList<Object>>> tree_qset = new TreeMap<>(Collections.reverseOrder());
 
         // Check every varchar column for matching keywords
 
@@ -65,7 +64,8 @@ public class UserSearch {
                 // Count frequency, add it to the master_hash_qset with the frequency being the
                 // key
                 int frequency = sqlreturn_keywordFrequency(sql_row, keywords);
-                tree_qset.put(frequency, sql_row);
+                tree_qset.putIfAbsent(frequency, new ArrayList<>());
+                tree_qset.get(frequency).add(sql_row);
             }
         }
         return tree_qset;
@@ -89,18 +89,25 @@ public class UserSearch {
         return frequency;
     }
 
-    public String hfqString(TreeMap<Integer, ArrayList<Object>> tree_qset){
+    public String hfqString(TreeMap<Integer, ArrayList<ArrayList<Object>>> tree_qset) {
         StringBuilder out = new StringBuilder();
-        for(Integer i : tree_qset.keySet()){
-            String file_name = tree_qset.get(i).get(2).toString();
-            String file_extension = tree_qset.get(i).get(3).toString();
-            String file_path = tree_qset.get(i).get(4).toString();
+        for (Integer i : tree_qset.keySet()) {
+            // get ArrayList<ArrayList<Object>>
+            for (ArrayList<Object> sql_row : tree_qset.get(i)) {
+                // get each sql row from
+                String file_name = sql_row.get(2).toString();
+                String file_path = sql_row.get(3).toString();
+                String file_keyw = sql_row.get(4).toString();
 
-            out.append(file_name).append("\n").append(file_path).append("\n");
+                out.append("frq: ").append(i).append("  ");
+                out.append(file_name).append("\n");
+                out.append(file_path).append("\n");
+                out.append(file_keyw).append("\n");
+            }
         }
         return out.toString();
-    }
 
+    }
 
     /* Methods for writing to JTextArea */
     public String longLineText() {
