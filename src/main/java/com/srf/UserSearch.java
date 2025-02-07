@@ -38,9 +38,9 @@ public class UserSearch {
 
         StringBuilder[] file_queries_pulltext = {
                 new StringBuilder("SELECT * FROM file_Index WHERE file_name REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_keyword REGEXP ")
+                //new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
+                //new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP "),
+                //new StringBuilder("SELECT * FROM file_Index WHERE file_keyword REGEXP ")
         };
 
         StringBuilder regex_line = new StringBuilder();
@@ -53,12 +53,13 @@ public class UserSearch {
 
         TreeMap<Integer, ArrayList<Object>> tree_qset = new TreeMap<>(Collections.reverseOrder());
 
-        String sql_regex_line = "\'" + regex_line + "\'";
         // Check every varchar column for matching keywords
 
         for (StringBuilder str : file_queries_pulltext) {
-            ArrayList<ArrayList<Object>> q_return = new ArrayList<>();
-            q_return = client.sendQuery_Query(sql_regex_line);
+            String quotes_escaped_regex = "'" + regex_line + "\'";
+            String sql_regex_line = str.append(quotes_escaped_regex).toString();
+            System.out.println(sql_regex_line);
+            ArrayList<ArrayList<Object>> q_return = client.sendQuery_Query(sql_regex_line);
 
             for (ArrayList<Object> sql_row : q_return) {
                 // Count frequency, add it to the master_hash_qset with the frequency being the
@@ -76,7 +77,7 @@ public class UserSearch {
          * keywords
          */
         int frequency = 0;
-        Pattern patern = Pattern.compile("\\b" + Arrays.toString(keywords) + "\\", Pattern.CASE_INSENSITIVE);
+        Pattern patern = Pattern.compile("\\b" + Arrays.toString(keywords) + "\\b", Pattern.CASE_INSENSITIVE);
         for (Object str : line) {
             if (str instanceof String) {
                 Matcher matcher = patern.matcher(str.toString());

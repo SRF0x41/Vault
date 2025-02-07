@@ -67,12 +67,11 @@ public class TextTools {
 
         // Store the sorted entries in a LinkedHashMap to maintain order
         LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
-        String[] key_words = new String[sortedMap.size()];
-        int count = 0;
         for (Map.Entry<String, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
-            key_words[count]= entry.getKey();
         }
+
+        String[] key_words = sortedMap.keySet().toArray(new String[0]);
 
         return key_words;
     }
