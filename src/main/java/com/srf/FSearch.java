@@ -20,6 +20,7 @@ public class FSearch {
     }
 
     private void traverseAll() {
+        /* This traverses all the files in the system that are visible */
         File rootDir = new File("/");
         List<File> allFiles = new ArrayList<>();
         traverseDir(rootDir, allFiles);
@@ -30,13 +31,17 @@ public class FSearch {
     }
 
     private static void traverseDir_toSQL(File dir, Client client, FileAnalyzer fa) {
+        /*
+         * Recursivly search through all the files in a given root dir. Will populate
+         * the sql database
+         */
 
         // Check if the directory exists and is actually a directory
         if (dir != null && dir.exists() && dir.isDirectory()) {
             File[] files = dir.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    // Print file/directory path
+                    // Check file or path
                     if (file.isFile()) {
                         String query = fa.fileAtributes_toSQLQuery(file);
                         client.sendQuery_Update(query);
@@ -60,16 +65,6 @@ public class FSearch {
 
             if (files != null) {
                 for (File file : files) {
-                    // Print file/directory path
-                    /*
-                     * if(file.isFile()){
-                     * System.out.println("File"+file.getAbsolutePath());
-                     * } else {
-                     * System.out.println("Dir "+file.getAbsolutePath());
-                     * }
-                     */
-
-                    // If it's a directory, recurse into it
                     if (file.isDirectory()) {
                         traverseDir(file, all_files);
                     }

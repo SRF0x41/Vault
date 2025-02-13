@@ -65,7 +65,7 @@ public class App {
     }
 
 
-    // TODO: simple function that populates the sql databse
+    // Simple function that populates the sql databse
     public void populateSQL(Client client) {
 
         try {
