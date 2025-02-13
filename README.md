@@ -1,21 +1,13 @@
-# File search engine
-Search engine built using Java and SQL
-
-
-Notes 
-
-CREATE TABLE file_Index(
--- This is the non normalized table that serves as the main file index
--- possible data, numerical id, file name, size of file, keywords, 
-file_id INT PRIMARY KEY AUTO_INCREMENT,
-file_size BIGINT,
-file_name VARCHAR(255),
-file_extension VARCHAR(50),
-file_path VARCHAR(1024),
-
-
--- File data atributes
-
--- average word is 5 character, 100 key words with 100 delimeters
-file_keyword VARCHAR(5000)
-);
+# Project Description:
+Developed a local file-based index search engine using Java and SQL to allow efficient searching of files stored on the local computer.
+## Key Features:
+<p>Java-based Backend: Built the core search functionality in Java, utilizing
+its object-oriented principles to structure the logic for indexing and
+searching files on the system.
+</p>
+<p>SQL Database Integration: Implemented an SQL database to store file
+metadata, including file names, paths, sizes, and indexed content.
+</p>
+<p>Indexing System: Developed a custom indexing mechanism that scans
+and indexes both file names and contents.
+</p>

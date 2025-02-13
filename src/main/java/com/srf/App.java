@@ -47,12 +47,13 @@ public class App {
 
             button.addActionListener(e -> {
                 String text = textField.getText(); // Get text from the field
-                // user_search.userPrompt_fuzzySearch(text);
 
                 SwingUtilities.invokeLater(() -> {
                     search_results.setText(user_search.hfqString(user_search.hfq_Search(text)));
                 });
             });
+
+            // Add objects to the jframe
             frame.add(label);
             frame.add(textField);
             frame.add(button);
@@ -63,6 +64,8 @@ public class App {
 
     }
 
+
+    // TODO: simple function that populates the sql databse
     public void populateSQL(Client client) {
 
         try {
