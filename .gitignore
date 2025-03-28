@@ -1,5 +1,9 @@
+# Compiled class files
+*.class
+
 # Maven build output
 /target/
+!*/src/main/resources/static/**   # Allow static files inside target (if needed)
 
 # Eclipse IDE files
 .project
@@ -9,16 +13,54 @@
 # IntelliJ IDEA project files
 .idea/
 *.iml
+*.iws
+out/
+
+# NetBeans project files
+/nbproject/private/
+/build/
+nbbuild/
+dist/
+nbdist/
+*.nbattrs
+
+# VS Code files
+.vscode/
 
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Logs and environment files
+*.log
+*.env
+*.pid
+hs_err_pid*
 
 # Maven Wrapper files
 .mvn/
 mvnw
 mvnw.cmd
 
-# Log and environment variable files
-*.log
-*.env
+# Generated files
+*.jar
+*.war
+*.ear
+
+# Test reports and coverage
+/test-output/
+surefire-reports/
+jacoco.exec
+.jacoco/
+
+# Gradle (if using in parallel with Maven)
+.gradle/
+build/
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# Dependencies (if not using Maven repo)
+lib/

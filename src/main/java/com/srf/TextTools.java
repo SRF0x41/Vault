@@ -20,7 +20,7 @@ public class TextTools {
     static {
         // Stop words hashset is used by all instances
 
-        String filePath = "/Users/sergiorodriguez/Desktop/dev/git_repos/Vault/vault/src/main/java/com/srf/stop_words.txt";
+        String filePath = "src/main/java/com/srf/stop_words.txt";
         File file = new File(filePath);
 
         BufferedReader reader = null;

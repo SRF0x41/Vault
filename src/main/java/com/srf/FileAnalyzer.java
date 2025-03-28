@@ -37,7 +37,7 @@ public class FileAnalyzer{
     static {
         // Stop words hashset is used by all instances
 
-        String filePath = "/Users/sergiorodriguez/Desktop/dev/git_repos/Vault/vault/src/main/java/com/srf/stop_words.txt"; 
+        String filePath = "src/main/java/com/srf/stop_words.txt"; 
         File file = new File(filePath);
         System.out.println("Looking for file at: " + file.getAbsolutePath());
         System.out.println("File exists: " + file.exists());
@@ -79,7 +79,7 @@ public class FileAnalyzer{
         
 
 
-        String query = "INSERT INTO file_Index (file_size, file_name, file_extension, file_path, file_keyword)";
+        String query = "INSERT INTO file_index (file_size, file_name, file_extension, file_path, file_keywords)";
         String values = "VALUES ("+file_size+",'"+file_name+"','"+file_extension+"','"+file_path+"','"+file_keywords+"')";
         return query +" "+values;
     }
