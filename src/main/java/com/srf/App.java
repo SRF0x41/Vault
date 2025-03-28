@@ -13,54 +13,9 @@ import javax.swing.SwingUtilities;
 
 public class App {
     public static void main(String[] args) {
-        // search tooling
-        Client client = new Client();
-        UserSearch user_search = new UserSearch(client);
-
-        float phi = (float) 1.618;
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Vault 1.0.0"); // UI created on the main thread
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1024, 632);
-            frame.add(new JLabel("Vault search"));
-            frame.setVisible(true);
-            frame.setLayout(new FlowLayout());
-
-            // Create a text field with a width of 20 columns
-            JTextField textField = new JTextField(20);
-
-            // Create a button to retrieve the text
-            JButton button = new JButton("Search");
-            int height = 40;
-            button.setPreferredSize(new Dimension((int) (height * phi), height));
-
-            JLabel label = new JLabel("Type something: ");
-
-            // Text area
-            JTextArea search_results = new JTextArea(20, 50); // (Rows, Columns)
-            search_results.setEditable(false); // Make non-editable
-
-            JScrollPane scrollPane = new JScrollPane(search_results);
-            scrollPane.setPreferredSize(new Dimension(800, 500));
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-            button.addActionListener(e -> {
-                String text = textField.getText(); // Get text from the field
-
-                SwingUtilities.invokeLater(() -> {
-                    search_results.setText(user_search.hfqString(user_search.hfq_Search(text)));
-                });
-            });
-
-            // Add objects to the jframe
-            frame.add(label);
-            frame.add(textField);
-            frame.add(button);
-
-            frame.add(scrollPane);
-
-        });
+        // Reliable database and file searching
+        Client test_client = new Client();
+        
 
     }
 

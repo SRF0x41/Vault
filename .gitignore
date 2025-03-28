@@ -1,0 +1,24 @@
+# Maven build output
+/target/
+
+# Eclipse IDE files
+.project
+.classpath
+.settings/
+
+# IntelliJ IDEA project files
+.idea/
+*.iml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Maven Wrapper files
+.mvn/
+mvnw
+mvnw.cmd
+
+# Log and environment variable files
+*.log
+*.env
