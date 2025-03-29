@@ -118,6 +118,9 @@ public class Client {
         sendQuery_Update("DROP TABLE file_Index");
     }
 
+    public boolean if_database_exists(){
+        return false;
+    }
     public void close() {
         try {
             // Close resources
