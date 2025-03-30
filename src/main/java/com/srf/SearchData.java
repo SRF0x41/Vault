@@ -25,15 +25,11 @@ public class SearchData {
         TextTools t_tools = new TextTools();
         String[] prompt_keywords = t_tools.pullKeywords(prompt); // Maybe this function could  be static
 
-        System.out.println("Pulled keywords: ");
+        System.out.print("Pulled keywords: ");
         for(String str : prompt_keywords){
             System.out.print(str+" ");
         }
         System.out.print("\n");
-
-        // Get
-
-
 
         /* Rank via keyword hit rate */
 
