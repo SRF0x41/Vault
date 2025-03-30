@@ -16,23 +16,25 @@ import javax.swing.SwingUtilities;
 public class App {
     public static void main(String[] args) {
         // Reliable database and file searching
-        // indexFiles("/home/acerlaptop1/Desktop/");
+        // indexFiles("/home/acerlaptop1/Desktop/MacBackup3_25_2025");
 
 
-        System.out.println("Hello world");
 
-        // Client client = new Client();
-        // String cli_input = "";
-        // do{
-        //     Scanner scanner = new Scanner(System.in);
-        //     System.out.println("Search:");
-        //     cli_input = scanner.nextLine();
+        
+        Client client = new Client();
+        Scanner scanner = new Scanner(System.in);
+        String cliInput;
 
-        //     SearchData search_data = new SearchData(client);
-        //     search_data.search(cli_input);
+        System.out.println("Type 'exit' to quit.");
+        
+        while (!(cliInput = scanner.nextLine()).equals("exit")) {
+            System.out.println("Search:");
+            SearchData searchData = new SearchData(client);
+            searchData.search(cliInput);
+        }
 
-            
-        // }while(cli_input.equals("exit"));
+        client.close();
+        scanner.close();
         
 
     }

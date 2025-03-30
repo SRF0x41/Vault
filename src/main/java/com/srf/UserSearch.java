@@ -35,10 +35,10 @@ public class UserSearch {
         String[] keywords = tt.pullKeywords(raw_user_prompt);
 
         StringBuilder[] file_queries_pulltext = {
-                new StringBuilder("SELECT * FROM file_Index WHERE file_name REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_extension REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_path REGEXP "),
-                new StringBuilder("SELECT * FROM file_Index WHERE file_keyword REGEXP ")
+                new StringBuilder("SELECT * FROM file_index WHERE file_name REGEXP "),
+                new StringBuilder("SELECT * FROM file_index WHERE file_extension REGEXP "),
+                new StringBuilder("SELECT * FROM file_index WHERE file_path REGEXP "),
+                new StringBuilder("SELECT * FROM file_index WHERE file_keyword REGEXP ")
         };
 
         StringBuilder regex_line = new StringBuilder();

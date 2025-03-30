@@ -6,68 +6,65 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/* UserSearch and client are mixing too much, separate the 
- * Client class to only handle direcnt communication to the 
- * sql server. Leave processing to user search.
+/* UserSearch and Client are mixing too much, separate the 
+ * Client class to only handle direct communication to the 
+ * SQL server. Leave processing to UserSearch.
  */
 
 public class Client {
+    // Database connection details
     private String jdbcURL = "jdbc:mysql://localhost:3306/FileIndex"; // Replace with your DB URL
     private String username = "root"; // Replace with your username
-    private String password = "kekito26";
+    private String password = "kekito26"; // Replace with your password
 
+    // SQL connection components
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet result = null;
 
     public Client() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            // Establish connection
-            System.out.println(password);
-            connection = DriverManager.getConnection(jdbcURL, username, password);
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL JDBC driver
+            System.out.println(password); // Debugging: Print password (Consider removing for security reasons)
+            connection = DriverManager.getConnection(jdbcURL, username, password); // Establish connection
             System.out.println("Connected to the database!");
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Print error if connection fails
         }
     }
 
     /*
-     * Notes
+     * SQL Table Structure
      * CREATE TABLE file_Index(
-     * -- This is the non normalized table that serves as the main file index
-     * -- possible data, numerical id, file name, size of file, keywords,
-     * file_id INT PRIMARY KEY AUTO_INCREMENT,
-     * file_size BIGINT,
-     * file_name VARCHAR(255),
-     * file_extension VARCHAR(50),
-     * file_path VARCHAR(1024),
-     * 
-     * 
-     * -- File data atributes
-     * 
-     * -- average word is 5 character, 100 key words with 100 delimeters
-     * file_keyword VARCHAR(5000)
+     *     file_id INT PRIMARY KEY AUTO_INCREMENT, // Unique identifier for files
+     *     file_size BIGINT, // File size in bytes
+     *     file_name VARCHAR(255), // File name
+     *     file_extension VARCHAR(50), // File extension
+     *     file_path VARCHAR(1024), // Full file path
+     *     file_keyword VARCHAR(5000) // Keywords for search
      * );
      */
 
+    // Executes a SELECT query and returns results as a nested ArrayList
     public ArrayList<ArrayList<Object>> sendQuery_Query(String q) {
-        /* OK */
         ArrayList<ArrayList<Object>> query_result = new ArrayList<>();
 
         try {
-            statement = connection.createStatement();
-            result = statement.executeQuery(q);
-            while (result.next()) {
-                ArrayList<Object> compiled_line = new ArrayList<>();
+            statement = connection.createStatement(); // Create SQL statement
+            result = statement.executeQuery(q); // Execute query
 
+            while (result.next()) { // Iterate over results
+                ArrayList<Object> compiled_line = new ArrayList<>();
+                
+                // Retrieve column values
                 int file_id = result.getInt("file_id");
                 long file_size = result.getInt("file_size");
                 String file_name = result.getString("file_name");
                 String file_extension = result.getString("file_extension");
                 String file_path = result.getString("file_path");
-                String file_keywords = result.getString("file_keyword");
-
+                String file_keywords = result.getString("file_keywords");
+                
+                // Store values in lowercase for uniformity
                 compiled_line.add(file_id);
                 compiled_line.add(file_size);
                 compiled_line.add(file_name.toLowerCase());
@@ -75,62 +72,51 @@ public class Client {
                 compiled_line.add(file_path.toLowerCase());
                 compiled_line.add(file_keywords.toLowerCase());
 
-                query_result.add(compiled_line);
-
-                // String comiled_line = ""+file_id+" " +file_size+" "+file_name+"
-                // "+file_extension+" "+file_path+" "+file_keywords;
+                query_result.add(compiled_line); // Add row to results
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Print error details
         }
         return query_result;
     }
 
+    // Performs a fuzzy search for file names containing the target value
     public ArrayList<ArrayList<Object>> fuzzySearch(String target_value) {
-        /* Obselete */
-        /*
-         * SQL like statement usage
-         * SELECT * FROM Customers
-         * WHERE city LIKE '%L%';
-         */
-
+        // LIKE query to find file names that contain the target value
         String query = "SELECT * FROM file_Index WHERE file_name LIKE '%" + target_value + "%' ;";
-        // Search file name first values like target value
-        ArrayList<ArrayList<Object>> q_result = sendQuery_Query(query);
-        return q_result;
+        return sendQuery_Query(query);
     }
 
     /*
-     * SELECT * FROM table_name
-     * WHERE column_name REGEXP 'apple|banana|cherry';
+     * Performs a keyword-based search using the REGEXP operator.
+     * Example:
+     * SELECT * FROM file_Index WHERE file_name REGEXP 'apple|banana|cherry';
      */
 
+    // Executes an UPDATE/INSERT/DELETE query
     public void sendQuery_Update(String q) {
         try {
             statement = connection.createStatement();
-            int result = statement.executeUpdate(q);
+            int result = statement.executeUpdate(q); // Execute update query
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Print error details
         }
     }
 
+    // Drops (deletes) the file index table
     public void DROP_FILE_INDEX() {
         sendQuery_Update("DROP TABLE file_Index");
     }
 
-   
+    // Closes database connections and resources
     public void close() {
         try {
-            // Close resources
-            if (result != null)
-                result.close();
-            if (statement != null)
-                statement.close();
-            if (connection != null)
-                connection.close();
+            if (result != null) result.close(); // Close result set
+            if (statement != null) statement.close(); // Close statement
+            if (connection != null) connection.close(); // Close connection
             System.out.println("Closed database connection");
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Print error details
         }
     }
 }
