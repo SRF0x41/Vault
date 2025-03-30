@@ -18,18 +18,21 @@ public class App {
         // Reliable database and file searching
         // indexFiles("/home/acerlaptop1/Desktop/");
 
-        Client client = new Client();
-        String cli_input = "";
-        do{
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Search:");
-            cli_input = scanner.nextLine();
 
-            SearchData search_data = new SearchData(client);
-            search_data.search(cli_input);
+        System.out.println("Hello world");
+
+        // Client client = new Client();
+        // String cli_input = "";
+        // do{
+        //     Scanner scanner = new Scanner(System.in);
+        //     System.out.println("Search:");
+        //     cli_input = scanner.nextLine();
+
+        //     SearchData search_data = new SearchData(client);
+        //     search_data.search(cli_input);
 
             
-        }while(cli_input.equals("exit"));
+        // }while(cli_input.equals("exit"));
         
 
     }

@@ -118,6 +118,7 @@ public class Client {
         sendQuery_Update("DROP TABLE file_Index");
     }
 
+   
     public void close() {
         try {
             // Close resources
