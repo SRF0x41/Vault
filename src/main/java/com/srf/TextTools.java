@@ -91,6 +91,4 @@ public class TextTools {
         }
         return true;
     }
-
-    // sort keywords
 }
