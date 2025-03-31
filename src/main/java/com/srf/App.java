@@ -20,21 +20,21 @@ public class App {
 
 
 
-        
-        Client client = new Client();
-        Scanner scanner = new Scanner(System.in);
-        String cliInput;
 
-        System.out.println("Type 'exit' to quit.");
-        
-        while (!(cliInput = scanner.nextLine()).equals("exit")) {
-            System.out.println("Search:");
-            SearchData searchData = new SearchData(client);
-            searchData.search(cliInput);
-        }
+        // Client client = new Client();
+        // Scanner scanner = new Scanner(System.in);
+        // String cliInput;
 
-        client.close();
-        scanner.close();
+        // System.out.println("Type 'exit' to quit.");
+        
+        // while (!(cliInput = scanner.nextLine()).equals("exit")) {
+        //     System.out.println("Search:");
+        //     SearchData searchData = new SearchData(client);
+        //     searchData.search(cliInput);
+        // }
+
+        // client.close();
+        // scanner.close();
         
 
     }

@@ -1,11 +1,15 @@
 package com.srf;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.mysql.cj.x.protobuf.MysqlxResultset.Row;
+
 public class SearchData {
     private Client client;
+    private ArrayList<ArrayList<Object>> main_entry_list = new ArrayList<>();
 
     public SearchData(Client c) {
         client = c;
@@ -55,20 +59,75 @@ public class SearchData {
                 new StringBuilder("SELECT * FROM file_index WHERE file_name REGEXP "),
                 new StringBuilder("SELECT * FROM file_index WHERE file_extension REGEXP "),
                 new StringBuilder("SELECT * FROM file_index WHERE file_path REGEXP "),
-                // new StringBuilder("SELECT * FROM file_index WHERE file_keywords REGEXP ")
+                new StringBuilder("SELECT * FROM file_index WHERE file_keywords REGEXP ")
         };
 
         for (StringBuilder query : file_queries_pulltext) {
             String full_query = query.append(quotes_escaped_regex).toString();
             ArrayList<ArrayList<Object>> q_return = client.sendQuery_Query(full_query);
-            printTable(q_return, prompt_keywords);
+
+            // Append a frequency and add to the sorted linked list
+            for (ArrayList<Object> row : q_return) {
+                int frequency = countHitRate(row, prompt_keywords);
+                row.add(frequency);
+                concatenateList(row);
+            }
         }
+
+        printMainList();
 
         // file_id non applicable
 
         // file_size implement later
 
     }
+
+    public void printMainList() {
+        // Check if the result is not empty
+        if (main_entry_list.isEmpty()) {
+            System.out.println("No results found.");
+            return;
+        }
+    
+        // Iterate through each row and print every object in the row on separate lines
+        for (ArrayList<Object> row : main_entry_list) {
+            // Print each element of the row with capitalized labels
+            System.out.println("KEYWORD FREQUENCY: "+row.get(6));
+            System.out.println("FILE_ID: " + row.get(0)); // file_id
+            System.out.println("FILE_SIZE: " + row.get(1)); // file_size
+            System.out.println("FILE_NAME: " + row.get(2)); // file_name
+            System.out.println("FILE_EXTENSION: " + row.get(3)); // file_extension
+            System.out.println("FILE_PATH: " + row.get(4)); // file_path
+            System.out.println("FILE_KEYWORDS: " + row.get(5)); // file_keywords
+            System.out.println(); // Add a blank line to separate each entry
+        }
+    }
+    
+    
+
+    public void concatenateList(ArrayList<Object> sql_row) {
+        if (main_entry_list.isEmpty()) {
+            main_entry_list.add(sql_row);
+            return;
+        }
+    
+        // Iterate through the main_entry_list to find the right position for sql_row
+        for (int i = 0; i < main_entry_list.size(); i++) {
+            ArrayList<Object> current_row = main_entry_list.get(i);
+            int stored_row_hits = (int) current_row.get(current_row.size() - 1); // Last element as hits
+            int row_hits = (int) sql_row.get(sql_row.size() - 1); // Last element as hits
+    
+            // Insert sql_row if its hits are less than the stored hits in current_row
+            if (row_hits < stored_row_hits) {
+                main_entry_list.add(i, sql_row);
+                return; // Stop after inserting the row
+            }
+        }
+    
+        // If no position found, add the row at the end of the list (sorted order)
+        main_entry_list.add(sql_row);
+    }
+    
 
     public int countHitRate(ArrayList<Object> q_return, String[] keywords) {
 
@@ -84,21 +143,6 @@ public class SearchData {
         }
 
         return total_hits;
-    }
-
-    public void printTable(ArrayList<ArrayList<Object>> q_return, String[] keywords) {
-        for (ArrayList<Object> row : q_return) {
-            System.out.println("Total hits: "+countHitRate(row, keywords));
-            String file_name = row.get(2).toString();
-            String file_path = row.get(4).toString();
-            // System.out.println(file_name+" "+file_path);
-            String file_ext = row.get(3).toString();
-            // System.out.println(file_name+" "+file_ext);
-            String file_keywords = row.get(5).toString();
-            System.out.println("\nFile Name: " + file_name + " File Extension: " + file_ext);
-            System.out.println("File Path: " + file_path);
-            // System.out.println("File Keywords: " + file_keywords);
-        }
     }
 
 }
