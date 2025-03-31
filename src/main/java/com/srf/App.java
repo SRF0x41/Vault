@@ -18,15 +18,12 @@ public class App {
         // Reliable database and file searching
         // indexFiles("/home/acerlaptop1/Desktop/MacBackup3_25_2025");
 
-
-
-
         Client client = new Client();
         Scanner scanner = new Scanner(System.in);
         String cliInput;
 
         System.out.println("Type 'exit' to quit.");
-        
+
         while (!(cliInput = scanner.nextLine()).equals("exit")) {
             System.out.println("Search:");
             SearchData searchData = new SearchData(client);
@@ -35,7 +32,6 @@ public class App {
 
         client.close();
         scanner.close();
-        
 
     }
 
