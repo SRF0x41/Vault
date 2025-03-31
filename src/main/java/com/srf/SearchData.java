@@ -9,7 +9,6 @@ import com.mysql.cj.x.protobuf.MysqlxResultset.Row;
 
 public class SearchData {
     private Client client;
-    private ArrayList<ArrayList<Object>> main_entry_list = new ArrayList<>();
 
     public SearchData(Client c) {
         client = c;
@@ -62,6 +61,7 @@ public class SearchData {
                 new StringBuilder("SELECT * FROM file_index WHERE file_keywords REGEXP ")
         };
 
+        ArrayList<ArrayList<Object>> main_entry_list = new ArrayList<>();
         for (StringBuilder query : file_queries_pulltext) {
             String full_query = query.append(quotes_escaped_regex).toString();
             ArrayList<ArrayList<Object>> q_return = client.sendQuery_Query(full_query);
@@ -70,11 +70,11 @@ public class SearchData {
             for (ArrayList<Object> row : q_return) {
                 int frequency = countHitRate(row, prompt_keywords);
                 row.add(frequency);
-                concatenateList(row);
+                concatenateList(main_entry_list,row);
             }
         }
 
-        printMainList();
+        printMainList(main_entry_list);
 
         // file_id non applicable
 
@@ -82,17 +82,17 @@ public class SearchData {
 
     }
 
-    public void printMainList() {
+    public void printMainList(ArrayList<ArrayList<Object>> main_entry_list) {
         // Check if the result is not empty
         if (main_entry_list.isEmpty()) {
             System.out.println("No results found.");
             return;
         }
-    
+
         // Iterate through each row and print every object in the row on separate lines
         for (ArrayList<Object> row : main_entry_list) {
             // Print each element of the row with capitalized labels
-            System.out.println("KEYWORD FREQUENCY: "+row.get(6));
+            System.out.println("KEYWORD FREQUENCY: " + row.get(6));
             System.out.println("FILE_ID: " + row.get(0)); // file_id
             System.out.println("FILE_SIZE: " + row.get(1)); // file_size
             System.out.println("FILE_NAME: " + row.get(2)); // file_name
@@ -102,32 +102,29 @@ public class SearchData {
             System.out.println(); // Add a blank line to separate each entry
         }
     }
-    
-    
 
-    public void concatenateList(ArrayList<Object> sql_row) {
+    public void concatenateList(ArrayList<ArrayList<Object>> main_entry_list, ArrayList<Object> sql_row) {
         if (main_entry_list.isEmpty()) {
             main_entry_list.add(sql_row);
             return;
         }
-    
+
         // Iterate through the main_entry_list to find the right position for sql_row
         for (int i = 0; i < main_entry_list.size(); i++) {
             ArrayList<Object> current_row = main_entry_list.get(i);
             int stored_row_hits = (int) current_row.get(current_row.size() - 1); // Last element as hits
             int row_hits = (int) sql_row.get(sql_row.size() - 1); // Last element as hits
-    
+
             // Insert sql_row if its hits are less than the stored hits in current_row
             if (row_hits < stored_row_hits) {
                 main_entry_list.add(i, sql_row);
                 return; // Stop after inserting the row
             }
         }
-    
+
         // If no position found, add the row at the end of the list (sorted order)
         main_entry_list.add(sql_row);
     }
-    
 
     public int countHitRate(ArrayList<Object> q_return, String[] keywords) {
 
