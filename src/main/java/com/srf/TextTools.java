@@ -21,8 +21,6 @@ public class TextTools {
         // Stop words hashset is used by all instances
 
         String filePath = "src/main/java/com/srf/stop_words.txt";
-        File file = new File(filePath);
-
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(filePath)); // Open the file for reading

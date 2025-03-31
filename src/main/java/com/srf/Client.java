@@ -36,12 +36,12 @@ public class Client {
     /*
      * SQL Table Structure
      * CREATE TABLE file_Index(
-     *     file_id INT PRIMARY KEY AUTO_INCREMENT, // Unique identifier for files
-     *     file_size BIGINT, // File size in bytes
-     *     file_name VARCHAR(255), // File name
-     *     file_extension VARCHAR(50), // File extension
-     *     file_path VARCHAR(1024), // Full file path
-     *     file_keyword VARCHAR(5000) // Keywords for search
+     * file_id INT PRIMARY KEY AUTO_INCREMENT, // Unique identifier for files
+     * file_size BIGINT, // File size in bytes
+     * file_name VARCHAR(255), // File name
+     * file_extension VARCHAR(50), // File extension
+     * file_path VARCHAR(1024), // Full file path
+     * file_keyword VARCHAR(5000) // Keywords for search
      * );
      */
 
@@ -55,7 +55,7 @@ public class Client {
 
             while (result.next()) { // Iterate over results
                 ArrayList<Object> compiled_line = new ArrayList<>();
-                
+
                 // Retrieve column values
                 int file_id = result.getInt("file_id");
                 long file_size = result.getInt("file_size");
@@ -63,7 +63,7 @@ public class Client {
                 String file_extension = result.getString("file_extension");
                 String file_path = result.getString("file_path");
                 String file_keywords = result.getString("file_keywords");
-                
+
                 // Store values in lowercase for uniformity
                 compiled_line.add(file_id);
                 compiled_line.add(file_size);
@@ -111,9 +111,12 @@ public class Client {
     // Closes database connections and resources
     public void close() {
         try {
-            if (result != null) result.close(); // Close result set
-            if (statement != null) statement.close(); // Close statement
-            if (connection != null) connection.close(); // Close connection
+            if (result != null)
+                result.close(); // Close result set
+            if (statement != null)
+                statement.close(); // Close statement
+            if (connection != null)
+                connection.close(); // Close connection
             System.out.println("Closed database connection");
         } catch (Exception e) {
             e.printStackTrace(); // Print error details

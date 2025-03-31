@@ -1,7 +1,6 @@
 com/srf/TextTools.class
+com/srf/App.class
 com/srf/SearchData.class
+com/srf/FileAnalyzer.class
 com/srf/FSearch.class
 com/srf/Client.class
-com/srf/App.class
-com/srf/UserSearch.class
-com/srf/FileAnalyzer.class
