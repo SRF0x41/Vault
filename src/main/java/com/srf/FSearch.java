@@ -43,8 +43,10 @@ public class FSearch {
                 for (File file : files) {
                     // Check file or path
                     if (file.isFile()) {
-                        String query = fa.fileAtributes_toSQLQuery(file);
-                        client.sendQuery_Update(query);
+                        String query = fa.fileAtributes_toSQLQuery(client, file);
+                        if(query != null){
+                            client.sendQuery_Update(query);
+                        }
                         System.out.println(file.getAbsolutePath());
                     }
                     // If it's a directory, recurse into it

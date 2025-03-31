@@ -1,10 +1,12 @@
 package com.srf;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 
 /* UserSearch and Client are mixing too much, separate the 
  * Client class to only handle direct communication to the 
@@ -55,15 +57,15 @@ public class Client {
 
             while (result.next()) { // Iterate over results
                 ArrayList<Object> compiled_line = new ArrayList<>();
-
+                
                 // Retrieve column values
-                int file_id = result.getInt("file_id");
-                long file_size = result.getInt("file_size");
-                String file_name = result.getString("file_name");
-                String file_extension = result.getString("file_extension");
-                String file_path = result.getString("file_path");
-                String file_keywords = result.getString("file_keywords");
-
+                int file_id = result.getInt("file_id"); // Unique file identifier
+                long file_size = result.getInt("file_size"); // File size in bytes
+                String file_name = result.getString("file_name"); // File name
+                String file_extension = result.getString("file_extension"); // File extension
+                String file_path = result.getString("file_path"); // File path
+                String file_keywords = result.getString("file_keywords"); // Keywords for search
+                
                 // Store values in lowercase for uniformity
                 compiled_line.add(file_id);
                 compiled_line.add(file_size);
@@ -78,6 +80,22 @@ public class Client {
             e.printStackTrace(); // Print error details
         }
         return query_result;
+    }
+
+
+    // CHECK FOR EXISTENCE HERE
+
+    public boolean queryForExistence(String query){
+        try{
+            statement = connection.createStatement(); // Create SQL statement
+            result = statement.executeQuery(query); // Execute query
+            while(result.next()){
+                return(result.getInt(1) == 1);
+            }
+        }catch (Exception e) {
+            e.printStackTrace(); // Print error details
+        }
+        return false;
     }
 
     // Performs a fuzzy search for file names containing the target value
@@ -96,18 +114,17 @@ public class Client {
     // Executes an UPDATE/INSERT/DELETE query
     public void sendQuery_Update(String q) {
         try {
-            statement = connection.createStatement();
+            statement = connection.createStatement(); // Create SQL statement
             int result = statement.executeUpdate(q); // Execute update query
         } catch (Exception e) {
             e.printStackTrace(); // Print error details
         }
     }
 
-    // Drops (deletes) the file index table
-    public void DROP_FILE_INDEX() {
-        sendQuery_Update("DROP TABLE file_Index");
+    public void DELETE_TABLE_DATA(){
+        sendQuery_Query("TRUNCATE TANBLE file_index");
     }
-
+    
     // Closes database connections and resources
     public void close() {
         try {
