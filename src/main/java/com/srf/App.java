@@ -7,7 +7,7 @@ public class App {
     public static void main(String[] args) {
         // Reliable database and file searching
         // indexFiles("/home/acerlaptop1/Desktop/MacBackup3_25_2025");
-        String root_path = "/home/user1/Desktop/Dev/NapierOne";
+        String root_path = "/home/user1/Desktop/MacBackup3_25_2025";
 
         Client client = new Client();
         Scanner scanner = new Scanner(System.in);
