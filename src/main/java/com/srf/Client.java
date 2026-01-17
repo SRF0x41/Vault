@@ -1,6 +1,5 @@
 package com.srf;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 public class Client {
     // Database connection details
-    private String jdbcURL = "jdbc:mysql://localhost:3306/FileIndex"; // Replace with your DB URL
+    private String jdbcURL = "jdbc:mysql://localhost:3306/FileIndex"; // DB URL
     private String username = "vault_test_user"; // Using a test use with no password
     private String password; // Replace with your password
 
