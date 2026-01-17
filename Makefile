@@ -4,7 +4,7 @@ CXXFLAGS = -std=c++17 -Wall -O2
 LIBS = $(shell pkg-config --cflags --libs mariadb)
 
 TARGET = vault_ver2
-SRC = main.cpp Client.cpp Indexer.cpp
+SRC = main.cpp Client.cpp Indexer.cpp FileAnalyzer.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(TARGET)
