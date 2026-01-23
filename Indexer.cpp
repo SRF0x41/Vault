@@ -12,7 +12,7 @@ void Indexer::index(const std::string &root_path) {
          std::filesystem::recursive_directory_iterator(root_path)) {
       if (std::filesystem::is_regular_file(entry.path())) { // only print files
 
-        if (FileAnalyzer::isCompressed(entry.path())) {
+        if (FileAnalyzer::isMicrosoftCompressedXML(entry.path())) {
           std::cout << entry.path() << "\n";
 
           // Test get size of file
