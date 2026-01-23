@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class FileAnalyzer {
 
     static {
         // Static block to initialize stop words list from a file
-        String filePath = "src/main/java/com/srf/stop_words.txt";
+        String filePath = "src/main/java/com/srf/persistent_storage/stop_words.txt";
         File file = new File(filePath);
         System.out.println("Looking for file at: " + file.getAbsolutePath());
         System.out.println("File exists: " + file.exists());
@@ -80,10 +79,6 @@ public class FileAnalyzer {
             return query + " " + values;
         }
         return null;
-
-
-        // Construct SQL query
-       
     }
 
     // Extracts keywords from a file and returns them as a string

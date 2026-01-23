@@ -1,6 +1,5 @@
 package com.srf;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,9 +14,9 @@ import java.util.ArrayList;
 
 public class Client {
     // Database connection details
-    private String jdbcURL = "jdbc:mysql://localhost:3306/FileIndex"; // Replace with your DB URL
-    private String username = "root"; // Replace with your username
-    private String password = "kekito26"; // Replace with your password
+    private String jdbcURL = "jdbc:mysql://localhost:3306/FileIndex"; // DB URL
+    private String username = "vault_test_user"; // Using a test use with no password
+    private String password; // Replace with your password
 
     // SQL connection components
     private Connection connection = null;
@@ -27,8 +26,7 @@ public class Client {
     public Client() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL JDBC driver
-            System.out.println(password); // Debugging: Print password (Consider removing for security reasons)
-            connection = DriverManager.getConnection(jdbcURL, username, password); // Establish connection
+            connection = DriverManager.getConnection(jdbcURL, username, ""); // Establish connection
             System.out.println("Connected to the database!");
         } catch (Exception e) {
             e.printStackTrace(); // Print error if connection fails

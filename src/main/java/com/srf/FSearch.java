@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * FSearch is responsible for traversing directories and files on the filesystem.
+ * It provides functionality to:
+ * - Recursively traverse directories
+ * - Collect files into lists
+ * - Analyze files and store metadata into a SQL database via a Client
+ *
+ * This class serves as a filesystem search and indexing utility.
+ */
 public class FSearch {
     private File base_dir;
 
@@ -26,6 +35,7 @@ public class FSearch {
         traverseDir(rootDir, allFiles);
     }
 
+    
     public void searchDir_toSQL(Client client, FileAnalyzer fa) {
         traverseDir_toSQL(base_dir, client, fa);
     }
