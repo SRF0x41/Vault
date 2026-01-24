@@ -87,9 +87,15 @@ bool FileAnalyzer::isPDF(const std::string &path) {
 }
 
 bool FileAnalyzer::isRawText(const std::string &path) {
-    static const std::unordered_set<std::string> textExts = {".txt", ".md", ".log", ".csv", ".json", ".xml", ".yaml", ".ini"};
+    static const std::unordered_set<std::string> textExts = {
+        // Plain text, logs, markdown, config
+        ".txt", ".log", ".md", ".csv", ".json", ".xml", ".yaml", ".yml", ".ini",
+        // Source code and scripts
+        ".c", ".cpp", ".h", ".py", ".java", ".js", ".html", ".css"
+    };
     return textExts.find(getExt(path)) != textExts.end();
 }
+
 
 // =====================
 // Stop Word Utilities

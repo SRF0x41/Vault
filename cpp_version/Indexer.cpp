@@ -33,6 +33,10 @@ void Indexer::index(const std::string &root_path) {
           FileAnalyzer::extractRaw_text(entry.path());
         }
 
+        if(FileAnalyzer::isPDF(entry.path())){
+          
+        }
+
         
           
 
