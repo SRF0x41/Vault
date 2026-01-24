@@ -4,6 +4,33 @@
 #include <iostream>
 #include <string>
 #include <unordered_set>
+#include <zip.h>
+#include <zipconf.h>
+
+const std::unordered_set<std::string_view> FileAnalyzer::stopWords = {
+    "i","me","my","myself","we","our","ours","ourselves",
+    "you","your","yours","yourself","yourselves",
+    "he","him","his","himself",
+    "she","her","hers","herself",
+    "it","its","itself",
+    "they","them","their","theirs","themselves",
+    "what","which","who","whom","this","that","these","those",
+    "am","is","are","was","were","be","been","being",
+    "have","has","had","having",
+    "do","does","did","doing",
+    "a","an","the",
+    "and","but","if","or","because","as","until","while",
+    "of","at","by","for","with","about","against","between","into","through","during","before","after","above","below",
+    "to","from","up","down","in","out","on","off","over","under",
+    "again","further","then","once",
+    "here","there","when","where","why","how",
+    "all","any","both","each","few","more","most","other","some","such",
+    "no","nor","not","only","own","same","so","than","too","very",
+    "s","t","can","will","just",
+    "don","should","now","d","ll","m","o","re","ve","y",
+    "ain","aren","couldn","didn","doesn","hadn","hasn","haven","isn","ma",
+    "mightn","mustn","needn","shan","shouldn","wasn","weren","won","wouldn"
+};
 
 std::size_t FileAnalyzer::getSize(const std::string &path) {
   return std::filesystem::file_size(path);
@@ -67,4 +94,93 @@ std::vector<std::string> FileAnalyzer::getKeywords(const std::string &path) {
     }
   }
   return {};
+}
+
+bool FileAnalyzer::isStopWord(const std::string &word){
+
+  return false;
+}
+
+
+int extractDOCX_text(const std::string &path) {
+  int err = 0; // Store error codes
+
+  // open the zip in read only
+  zip *opened_zip = zip_open(path.c_str(), ZIP_RDONLY, &err);
+  if (!opened_zip) {
+    std::cerr << "Failed to open zip" << '\n';
+    return 1;
+  }
+
+  zip_int64_t document_xml_index =
+      zip_name_locate(opened_zip, "word/document.xml", 0);
+  if (document_xml_index < 0) {
+    return 1;
+  }
+
+  zip_stat_t st;
+  zip_stat_init(&st);
+  zip_stat_index(opened_zip, document_xml_index, 0, &st);
+
+  std::cout << st.name << '\n';
+
+  // open file inside zip
+  zip_file *zf = zip_fopen_index(opened_zip, document_xml_index, 0);
+  if (!zf)
+    return 1;
+  // create a buffer for storing data chunks, lzip can do 8192 bytes
+  char buffer[8192];
+
+  // number of bytes read per iteration
+  zip_int64_t n;
+  // write to disk 'out'
+  while ((n = zip_fread(zf, buffer, sizeof(buffer))) > 0) {
+    //char word[n+1];
+    bool inside_tag = false;
+    //int word_index = 0;
+    size_t word_size = 0;
+    for (zip_int64_t i = 0; i < n; ++i) {
+      char c = buffer[i];
+      if (c == '<') {
+        inside_tag = true;
+      } else if (c == '>') {
+        inside_tag = false;
+      } else if (!inside_tag) {
+        // This works too
+        // if(c == ' '){
+        //   word[word_index] = '\0';
+        //   std::cout << word << '\n';
+        //   word_index = 0;
+        // } else {
+        //   word[word_index] = c;
+        //   word_index++;
+        // }
+        //std::cout << c;
+        
+        if(c == ' '){
+          char word[word_size+1];
+          zip_int64_t count = 0;
+          for(zip_int64_t x = i - word_size; x < i; x++){
+            word[count] = buffer[x];
+            count++;
+          }
+          count = 0;
+          word[word_size] = '\0';
+          word_size = 0;
+          std::cout << word << '\n';
+        } else {
+          word_size++;
+        }
+        
+      }
+    }
+  }
+
+  // close zf
+  zip_fclose(zf);
+
+  // close za
+  zip_close(opened_zip);
+
+  return 0;
 }

@@ -1,10 +1,10 @@
-#include <filesystem>
-#include <fstream>
+#include <cstddef>
 #include <iostream>
-#include <regex>
 #include <string>
 #include <zip.h>
 #include <zipconf.h>
+#include <stdio.h>
+#include <string.h>
 // g++ test_microsoft.cpp -lzip -o microslop
 
 int extractDOCX_text(const std::string &path);
@@ -46,16 +46,44 @@ int extractDOCX_text(const std::string &path) {
   zip_int64_t n;
   // write to disk 'out'
   while ((n = zip_fread(zf, buffer, sizeof(buffer))) > 0) {
-
+    //char word[n+1];
     bool inside_tag = false;
+    //int word_index = 0;
+    size_t word_size = 0;
     for (zip_int64_t i = 0; i < n; ++i) {
       char c = buffer[i];
-      if (c == '<')
+      if (c == '<') {
         inside_tag = true;
-      else if (c == '>')
+      } else if (c == '>') {
         inside_tag = false;
-      else if (!inside_tag)
-        std::cout << c;
+      } else if (!inside_tag) {
+        // This works too
+        // if(c == ' '){
+        //   word[word_index] = '\0';
+        //   std::cout << word << '\n';
+        //   word_index = 0;
+        // } else {
+        //   word[word_index] = c;
+        //   word_index++;
+        // }
+        //std::cout << c;
+        
+        if(c == ' '){
+          char word[word_size+1];
+          size_t count = 0;
+          for(size_t x = i - word_size; x < i; x++){
+            word[count] = buffer[x];
+            count++;
+          }
+          count = 0;
+          word[word_size] = '\0';
+          word_size = 0;
+          std::cout << word << '\n';
+        } else {
+          word_size++;
+        }
+        
+      }
     }
   }
 
