@@ -44,6 +44,13 @@ const std::unordered_set<char> FileAnalyzer::punctuationSet = {
     '^', '&',  '*', '+', '=', '<', '>',  '|', '~', '`'};
 
 // =====================
+// Constructor
+// =====================
+FileAnalyzer::FileAnalyzer(){
+  
+}
+
+// =====================
 // File Utilities
 // =====================
 std::size_t FileAnalyzer::getSize(const std::string &path) {

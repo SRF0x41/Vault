@@ -1,10 +1,18 @@
 #pragma once
+#include <cstddef>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
 class FileAnalyzer {
 public:
+
+    // =====================
+    // Constructor
+    // =====================
+    FileAnalyzer();
+    ~FileAnalyzer();
+
     // =====================
     // File Information
     // =====================
@@ -43,9 +51,7 @@ private:
     // =====================
     static const std::unordered_set<std::string_view> stopWords;
     static const std::unordered_set<char> punctuationSet;
-
-    // Prevent instantiation
-    FileAnalyzer() = delete;
+    
 };
 
 
@@ -68,5 +74,10 @@ Never treat as text
 .sys, .img, .iso
 .jpg, .png, .mp4, .mp3
 .rar, .7z, .gz
+
+
+Database structure
+
+
 
 */
