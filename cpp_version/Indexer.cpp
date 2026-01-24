@@ -12,8 +12,7 @@ void Indexer::index(const std::string &root_path) {
          std::filesystem::recursive_directory_iterator(root_path)) {
       if (std::filesystem::is_regular_file(entry.path())) { // only print files
 
-        if (FileAnalyzer::isMicrosoftCompressedXML(entry.path())) {
-          std::cout << entry.path() << "\n";
+        std::cout << entry.path() << "\n";
 
           // Test get size of file
           size_t file_size_bytes = FileAnalyzer::getSize(entry.path());
@@ -26,12 +25,23 @@ void Indexer::index(const std::string &root_path) {
           // Test get extension of file
           std::cout << "FILE EXTENSION: " << FileAnalyzer::getExt(entry.path())
                     << "\n";
+        if(FileAnalyzer::isDOCX(entry.path())){
+          FileAnalyzer::extractDOCX_text(entry.path());
+        }
+
+        if(FileAnalyzer::isRawText(entry.path())){
+          FileAnalyzer::extractRaw_text(entry.path());
+        }
+
+        
+          
 
           // Test get keywords
           // std::cout << "KEYWORDS: " <<
           // FileAnalyzer::getKeywords(entry.path()) << " \n";
           // FileAnalyzer::getKeywords(entry.path());
-        }
+
+        
       }
     }
   } catch (const std::filesystem::filesystem_error &e) {
