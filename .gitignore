@@ -1,66 +1,92 @@
+# ==========================
+# Java / Maven
+# ==========================
+
 # Compiled class files
 *.class
 
-# Maven build output
-/target/
-!*/src/main/resources/static/**   # Allow static files inside target (if needed)
-
-# Eclipse IDE files
-.project
-.classpath
-.settings/
-
-# IntelliJ IDEA project files
-.idea/
-*.iml
-*.iws
-out/
-
-# NetBeans project files
-/nbproject/private/
-/build/
-nbbuild/
-dist/
-nbdist/
-*.nbattrs
-
-# VS Code files
-.vscode/
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# Logs and environment files
+# Log files
 *.log
-*.env
-*.pid
-hs_err_pid*
 
-# Maven Wrapper files
-.mvn/
-mvnw
-mvnw.cmd
+# BlueJ files
+*.ctxt
 
-# Generated files
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
 *.jar
 *.war
 *.ear
 
-# Test reports and coverage
-/test-output/
-surefire-reports/
-jacoco.exec
-.jacoco/
+# Maven target directory
+/target/
 
-# Gradle (if using in parallel with Maven)
-.gradle/
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ IDEA
+*.iml
+.idea/
+out/
+
+# NetBeans
+nbproject/private/
 build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-# Temporary files
+# VS Code
+.vscode/
+
+# ==========================
+# C++ / C
+# ==========================
+
+# Compiled object files
+*.o
+*.obj
+
+# Compiled static libraries
+*.lib
+*.a
+
+# Compiled dynamic libraries
+*.dll
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Build directories
+/build/
+/cmake-build-*/
+
+# Makefiles
+Makefile
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+
+# ==========================
+# OS Files
+# ==========================
+.DS_Store
+Thumbs.db
 *.swp
 *.swo
-*~
 
-# Dependencies (if not using Maven repo)
-lib/
+# ==========================
+# Misc / Temporary
+# ==========================
+*.log
+*.tmp
+*.bak
