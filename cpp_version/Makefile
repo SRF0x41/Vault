@@ -1,10 +1,10 @@
 # Compiler
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -O2
-LIBS = $(shell pkg-config --cflags --libs mariadb libzip lsqlite3)
+LIBS = $(shell pkg-config --cflags --libs mariadb libzip sqlite3)
 
 TARGET = vault_ver2
-SRC = main.cpp Client.cpp Indexer.cpp FileAnalyzer.cpp SQlite_Client.cpp
+SRC = main.cpp Indexer.cpp FileAnalyzer.cpp SQlite_Client.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(TARGET)

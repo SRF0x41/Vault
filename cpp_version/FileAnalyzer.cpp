@@ -46,9 +46,7 @@ const std::unordered_set<char> FileAnalyzer::punctuationSet = {
 // =====================
 // Constructor
 // =====================
-FileAnalyzer::FileAnalyzer(){
-  
-}
+FileAnalyzer::FileAnalyzer() {}
 
 // =====================
 // File Utilities

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "Client.h"
+#include "SQlite_Client.h"
 #include "Indexer.h"
 
 int main() {
@@ -8,7 +8,7 @@ int main() {
     std::string root_path = "/home/user1/Desktop/MacBackup3_25_2025";
     std::string input_line;
 
-    Client db_client;
+    Client client = Client();
     Indexer indexer;
 
     while(input_line != "exit"){
@@ -16,5 +16,18 @@ int main() {
         if(input_line == "index"){
             indexer.index(root_path);
         }
+
+        if(input_line == "test-client"){
+
+        }
+
+        if(input_line == "get-fileindex"){
+
+        }
+
+        if(input_line == "get-metadata"){
+            
+        }
     }
+
 }
