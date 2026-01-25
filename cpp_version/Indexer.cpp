@@ -12,7 +12,9 @@ void Indexer::index(const std::string &root_path) {
          std::filesystem::recursive_directory_iterator(root_path)) {
       if (std::filesystem::is_regular_file(entry.path())) { // only print files
 
-        std::cout << entry.path() << "\n";
+        // ====================
+        // Get basic metadata on the file
+        // ====================
 
         // Test get name of file
         std::cout << "FILE NAME: " << FileAnalyzer::getName(entry.path())
@@ -28,9 +30,19 @@ void Indexer::index(const std::string &root_path) {
         size_t file_size_bytes = FileAnalyzer::getSize(entry.path());
         std::cout << "FILE SIZE: " << file_size_bytes << "\n";
 
-        
+        std::cout << "LAST WRITE TIME ISO: "
+                  << FileAnalyzer::getLastModifiedISO(entry.path());
 
-        std::cout << "LAST WRITE TIME ISO: " << FileAnalyzer::getLastModifiedISO(entry.path());
+        std::cout << "LAST WRITE TIME UNIX: "
+                  << FileAnalyzer::getLastModifiedUnixTime(entry.path())
+                  << '\n';
+
+        std::cout << "FILE PERMISSIONS: "
+                  << FileAnalyzer::getPermissions(entry.path()) << '\n';
+
+        // ====================
+        // Parsers
+        // ====================
 
         if (FileAnalyzer::isDOCX(entry.path())) {
           // FileAnalyzer::extractDOCX_text(entry.path());

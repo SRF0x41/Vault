@@ -64,56 +64,89 @@ std::string FileAnalyzer::getExt(const std::string &path) {
   return std::filesystem::path(path).extension().string();
 }
 
-/*cpp
-
+/*#include <filesystem>
+#include <fstream>
 #include <iostream>
-#include <chrono>
-#include <filesystem>
-#include <ctime>
 
-namespace fs = std::filesystem;
-
-long long file_path_to_unix_time(const fs::path& p) {
-    // Get the file's last write time
-    fs::file_time_type ftime = fs::last_write_time(p);
-
-    // Convert file_time_type to system_clock::time_point (C++20 guaranteed)
-    auto s_clock_time_point = fs::last_write_time_as_system_clock(p);
-
-    // Convert to a duration since the Unix epoch (1970-01-01 00:00:00 UTC)
-    auto epoch_duration = s_clock_time_point.time_since_epoch();
-
-    // Cast the duration to seconds and get the count
-    long long unix_timestamp =
-std::chrono::duration_cast<std::chrono::seconds>(epoch_duration).count();
-
-    return unix_timestamp;
-}*/
-
-
-long long FileAnalyzer::getLastModifiedUnixTime(const std::string &path) {
-    std::filesystem::path p = path;
-
-    // Get last write time
-    auto ftime = std::filesystem::last_write_time(p);
-
-    // Convert to system_clock::time_point
-    auto sys_time = std::chrono::file_clock::to_sys(ftime);
-
-    // Convert to Unix timestamp (seconds since epoch)
-    long long unix_timestamp = std::chrono::duration_cast<std::chrono::seconds>(
-        sys_time.time_since_epoch()
-    ).count();
-
-    return unix_timestamp;
+void demo_perms(std::filesystem::perms p)
+{
+    using std::filesystem::perms;
+    auto show = [=](char op, perms perm)
+    {
+        std::cout << (perms::none == (perm & p) ? '-' : op);
+    };
+    show('r', perms::owner_read);
+    show('w', perms::owner_write);
+    show('x', perms::owner_exec);
+    show('r', perms::group_read);
+    show('w', perms::group_write);
+    show('x', perms::group_exec);
+    show('r', perms::others_read);
+    show('w', perms::others_write);
+    show('x', perms::others_exec);
+    std::cout << '\n';
 }
 
+int main()
+{
+    std::ofstream("test.txt"); // create file
+
+    std::cout << "Created file with permissions: ";
+    demo_perms(std::filesystem::status("test.txt").permissions());
+
+    std::filesystem::permissions(
+        "test.txt",
+        std::filesystem::perms::owner_all | std::filesystem::perms::group_all,
+        std::filesystem::perm_options::add
+    );
+
+    std::cout << "After adding u+rwx and g+rwx:  ";
+    demo_perms(std::filesystem::status("test.txt").permissions());
+
+    std::filesystem::remove("test.txt");
+}*/
+
+std::string FileAnalyzer::getPermissions(const std::string &path) {
+  std::filesystem::perms perms = std::filesystem::status(path).permissions();
+  std::string perms_str;
+
+  auto show = [&](char op, std::filesystem::perms perm) {
+    perms_str += (std::filesystem::perms::none == (perm & perms) ? '-' : op);
+  };
+  show('r', std::filesystem::perms::owner_read);
+  show('w', std::filesystem::perms::owner_write);
+  show('x', std::filesystem::perms::owner_exec);
+  show('r', std::filesystem::perms::group_read);
+  show('w', std::filesystem::perms::group_write);
+  show('x', std::filesystem::perms::group_exec);
+  show('r', std::filesystem::perms::others_read);
+  show('w', std::filesystem::perms::others_write);
+  show('x', std::filesystem::perms::others_exec);
+
+  return perms_str;
+}
+
+long long FileAnalyzer::getLastModifiedUnixTime(const std::string &path) {
+  std::filesystem::path p = path;
+
+  // Get last write time
+  auto ftime = std::filesystem::last_write_time(p);
+
+  // Convert to system_clock::time_point
+  auto sys_time = std::chrono::file_clock::to_sys(ftime);
+
+  // Convert to Unix timestamp (seconds since epoch)
+  long long unix_timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+                                 sys_time.time_since_epoch())
+                                 .count();
+
+  return unix_timestamp;
+}
 
 std::string FileAnalyzer::getLastModifiedISO(const std::string &path) {
   // get path then file time
   std::filesystem::path p = path;
-  std::filesystem::file_time_type ftime =
-  std::filesystem::last_write_time(p);
+  std::filesystem::file_time_type ftime = std::filesystem::last_write_time(p);
 
   // Convert to unix time
   auto system_time = std::chrono::file_clock::to_sys(ftime);

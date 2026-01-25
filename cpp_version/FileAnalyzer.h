@@ -6,56 +6,57 @@
 
 class FileAnalyzer {
 public:
+  // =====================
+  // Constructor
+  // =====================
+  FileAnalyzer();
+  ~FileAnalyzer();
 
-    // =====================
-    // Constructor
-    // =====================
-    FileAnalyzer();
-    ~FileAnalyzer();
+  // =====================
+  // File Information
+  // =====================
+  static std::size_t getSize(const std::string &path);
+  static std::string getName(const std::string &path);
+  static std::string getExt(const std::string &path);
+  static std::string getLastModifiedISO(const std::string &path);
+  static long long getLastModifiedUnixTime(const std::string &path);
+  static std::string getPermissions(const std::string &path);
+  // These are platform specific
+  // static std::string getFirstCreatedISO(const std::string &path);
+  // static long long getFirstCreatedUnixTime(const std::string &path);
 
-    // =====================
-    // File Information
-    // =====================
-    static std::size_t getSize(const std::string &path);
-    static std::string getName(const std::string &path);
-    static std::string getExt(const std::string &path);
-    static std::string getLastModifiedISO(const std::string &path);
-    static long long getLastModifiedUnixTime(const std::string &path);
+  // =====================
+  // File Type Checks
+  // =====================
+  static bool isPDF(const std::string &path);
+  static bool isCompressed(const std::string &path);
+  static bool isRawText(const std::string &path);
+  static bool isMicrosoftCompressedXML(const std::string &path);
+  static bool isDOCX(const std::string &path);
 
-    // =====================
-    // File Type Checks
-    // =====================
-    static bool isPDF(const std::string &path);
-    static bool isCompressed(const std::string &path);
-    static bool isRawText(const std::string &path);
-    static bool isMicrosoftCompressedXML(const std::string &path);
-    static bool isDOCX(const std::string &path);
+  // =====================
+  // Stop Word Utilities
+  // =====================
+  static bool isStopWord(const std::string &word);
 
-    // =====================
-    // Stop Word Utilities
-    // =====================
-    static bool isStopWord(const std::string &word);
+  // =====================
+  // Keyword Extraction
+  // =====================
+  static std::vector<std::string> getKeywords(const std::string &path);
 
-    // =====================
-    // Keyword Extraction
-    // =====================
-    static std::vector<std::string> getKeywords(const std::string &path);
-
-    // =====================
-    // Text Extraction
-    // =====================
-    static int extractDOCX_text(const std::string &path);
-    static int extractRaw_text(const std::string &path);
+  // =====================
+  // Text Extraction
+  // =====================
+  static int extractDOCX_text(const std::string &path);
+  static int extractRaw_text(const std::string &path);
 
 private:
-    // =====================
-    // Internal Data
-    // =====================
-    static const std::unordered_set<std::string_view> stopWords;
-    static const std::unordered_set<char> punctuationSet;
-    
+  // =====================
+  // Internal Data
+  // =====================
+  static const std::unordered_set<std::string_view> stopWords;
+  static const std::unordered_set<char> punctuationSet;
 };
-
 
 /* Notes:
 
