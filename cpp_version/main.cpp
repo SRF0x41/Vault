@@ -21,12 +21,12 @@ int main() {
 
         }
 
-        if(input_line == "get-fileindex"){
+        if(input_line == "get-fileindex-head"){
 
         }
 
-        if(input_line == "get-metadata"){
-            
+        if(input_line == "get-metadata-head"){
+
         }
     }
 

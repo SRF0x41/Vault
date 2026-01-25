@@ -52,11 +52,11 @@ int Client::sendQuery(const std::string &query) {
   return 0;
 }
 
-int Client::getFileIndexHead(){}
-int getMetadata();
+int Client::getFileIndexHead(){return 0;}
+int Client::getMetadata(){return 0;};
 
-int dropFileIndex();
-int dropMetadata();
-int closeConnection();
+int Client::dropFileIndex(){return 0;};
+int Client::dropMetadata(){return 0;};
+int Client::closeConnection(){return 0;};
 
 Client::~Client() { sqlite3_close(database); }

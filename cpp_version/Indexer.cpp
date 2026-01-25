@@ -31,7 +31,7 @@ void Indexer::index(const std::string &root_path) {
         std::cout << "FILE SIZE: " << file_size_bytes << "\n";
 
         std::cout << "LAST WRITE TIME ISO: "
-                  << FileAnalyzer::getLastModifiedISO(entry.path());
+                  << FileAnalyzer::getLastModifiedISO(entry.path()) << '\n';
 
         std::cout << "LAST WRITE TIME UNIX: "
                   << FileAnalyzer::getLastModifiedUnixTime(entry.path())
