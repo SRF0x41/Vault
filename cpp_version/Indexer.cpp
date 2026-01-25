@@ -14,38 +14,39 @@ void Indexer::index(const std::string &root_path) {
 
         std::cout << entry.path() << "\n";
 
-          // Test get size of file
-          size_t file_size_bytes = FileAnalyzer::getSize(entry.path());
-          std::cout << "FILE SIZE: " << file_size_bytes << "\n";
+        // Test get name of file
+        std::cout << "FILE NAME: " << FileAnalyzer::getName(entry.path())
+                  << "\n";
 
-          // Test get name of file
-          std::cout << "FILE NAME: " << FileAnalyzer::getName(entry.path())
-                    << "\n";
+        // Test get extension of file
+        std::cout << "FILE EXTENSION: " << FileAnalyzer::getExt(entry.path())
+                  << "\n";
 
-          // Test get extension of file
-          std::cout << "FILE EXTENSION: " << FileAnalyzer::getExt(entry.path())
-                    << "\n";
-        if(FileAnalyzer::isDOCX(entry.path())){
-          FileAnalyzer::extractDOCX_text(entry.path());
-        }
+        std::cout << "FILE PATH: " << entry.path() << "\n";
 
-        if(FileAnalyzer::isRawText(entry.path())){
-          FileAnalyzer::extractRaw_text(entry.path());
-        }
-
-        if(FileAnalyzer::isPDF(entry.path())){
-          
-        }
+        // Test get size of file
+        size_t file_size_bytes = FileAnalyzer::getSize(entry.path());
+        std::cout << "FILE SIZE: " << file_size_bytes << "\n";
 
         
-          
 
-          // Test get keywords
-          // std::cout << "KEYWORDS: " <<
-          // FileAnalyzer::getKeywords(entry.path()) << " \n";
-          // FileAnalyzer::getKeywords(entry.path());
+        std::cout << "LAST WRITE TIME ISO: " << FileAnalyzer::getLastModifiedISO(entry.path());
 
-        
+        if (FileAnalyzer::isDOCX(entry.path())) {
+          // FileAnalyzer::extractDOCX_text(entry.path());
+        }
+
+        if (FileAnalyzer::isRawText(entry.path())) {
+          // FileAnalyzer::extractRaw_text(entry.path());
+        }
+
+        if (FileAnalyzer::isPDF(entry.path())) {
+        }
+
+        // Test get keywords
+        // std::cout << "KEYWORDS: " <<
+        // FileAnalyzer::getKeywords(entry.path()) << " \n";
+        // FileAnalyzer::getKeywords(entry.path());
       }
     }
   } catch (const std::filesystem::filesystem_error &e) {

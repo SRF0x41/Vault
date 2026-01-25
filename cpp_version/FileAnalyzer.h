@@ -19,6 +19,8 @@ public:
     static std::size_t getSize(const std::string &path);
     static std::string getName(const std::string &path);
     static std::string getExt(const std::string &path);
+    static std::string getLastModifiedISO(const std::string &path);
+    static long long getLastModifiedUnixTime(const std::string &path);
 
     // =====================
     // File Type Checks

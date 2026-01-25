@@ -1,6 +1,6 @@
 # Compiler
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -O2
+CXXFLAGS = -std=c++23 -Wall -O2   
 LIBS = $(shell pkg-config --cflags --libs mariadb libzip sqlite3)
 
 TARGET = vault_ver2

@@ -1,4 +1,5 @@
 #include "FileAnalyzer.h"
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -62,6 +63,67 @@ std::string FileAnalyzer::getName(const std::string &path) {
 std::string FileAnalyzer::getExt(const std::string &path) {
   return std::filesystem::path(path).extension().string();
 }
+
+/*cpp
+
+#include <iostream>
+#include <chrono>
+#include <filesystem>
+#include <ctime>
+
+namespace fs = std::filesystem;
+
+long long file_path_to_unix_time(const fs::path& p) {
+    // Get the file's last write time
+    fs::file_time_type ftime = fs::last_write_time(p);
+
+    // Convert file_time_type to system_clock::time_point (C++20 guaranteed)
+    auto s_clock_time_point = fs::last_write_time_as_system_clock(p);
+
+    // Convert to a duration since the Unix epoch (1970-01-01 00:00:00 UTC)
+    auto epoch_duration = s_clock_time_point.time_since_epoch();
+
+    // Cast the duration to seconds and get the count
+    long long unix_timestamp =
+std::chrono::duration_cast<std::chrono::seconds>(epoch_duration).count();
+
+    return unix_timestamp;
+}*/
+
+
+long long FileAnalyzer::getLastModifiedUnixTime(const std::string &path) {
+    std::filesystem::path p = path;
+
+    // Get last write time
+    auto ftime = std::filesystem::last_write_time(p);
+
+    // Convert to system_clock::time_point
+    auto sys_time = std::chrono::file_clock::to_sys(ftime);
+
+    // Convert to Unix timestamp (seconds since epoch)
+    long long unix_timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+        sys_time.time_since_epoch()
+    ).count();
+
+    return unix_timestamp;
+}
+
+
+std::string FileAnalyzer::getLastModifiedISO(const std::string &path) {
+  // get path then file time
+  std::filesystem::path p = path;
+  std::filesystem::file_time_type ftime =
+  std::filesystem::last_write_time(p);
+
+  // Convert to unix time
+  auto system_time = std::chrono::file_clock::to_sys(ftime);
+
+  std::string iso_time = std::format("{:%Y-%m-%dT%H:%M:%S%z}", system_time);
+
+  return iso_time;
+}
+
+// std::string FileAnalyzer
 
 bool FileAnalyzer::isCompressed(const std::string &path) {
   std::ifstream file(path, std::ios::binary);
