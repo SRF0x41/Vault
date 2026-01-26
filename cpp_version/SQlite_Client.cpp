@@ -1,7 +1,9 @@
 #include "SQlite_Client.h"
 #include <cstddef>
+#include <format>
 #include <iostream>
 #include <sqlite3.h>
+#include <string>
 
 Client::Client() {
   if (sqlite3_open("FileIndex.db", &database)) {
@@ -52,11 +54,85 @@ int Client::sendQuery(const std::string &query) {
   return 0;
 }
 
-int Client::getFileIndexHead(){return 0;}
-int Client::getMetadata(){return 0;};
+int Client::getFileIndexHead() {
+  if (!Client::sendQuery("select * from file_index limit 10;")) {
+    std::cerr << "Error getting file_index head." << '\n';
+    return 1;
+  }
+  return 0;
+}
 
-int Client::dropFileIndex(){return 0;};
-int Client::dropMetadata(){return 0;};
-int Client::closeConnection(){return 0;};
+/*INSERT INTO files (path, size, mode)
+VALUES ('/home/user/test.txt', 1024, 420);
+
+UPDATE table_name
+SET counter = counter + 1
+WHERE id = 1
+RETURNING counter;
+
+*/
+
+int Client::incrementExtensionCount(const std::string &extension) {
+
+  // std::string query = std::format("UPDATE file_index_metadata SET n_{0} =
+  // n_{0} + 1 WHERE id = 1",extension.substr(1));
+
+  //         if (!Client::sendQuery("INSERT INTO file_index_metadata "
+  //                                ""))
+  // SELECT n_txt FROM file_index_metadata WHERE id = 1;
+
+  /*std::string q = std::format(
+            "INSERT INTO file_index "
+            "(file_name,file_extension,file_path,file_size_bytes,"
+            "file_last_modified,file_permissions) "
+            "VALUES ('{}','{}','{}',{},{},{})",
+            escape(FileAnalyzer::getName(entry.path())),
+            escape(FileAnalyzer::getExt(entry.path())),
+            escape(entry.path().string()), FileAnalyzer::getSize(entry.path()),
+            FileAnalyzer::getLastModifiedUnixTime(entry.path()),
+            FileAnalyzer::getPermissions_int(entry.path()));
+            UPDATE file_index_metadata
+SET n_txt = n_txt + 1
+WHERE id = 1;
+            */
+  std::string q = std::format(
+      "UPDATE file_index_metadata SET n_{} = n_{} + 1 WHERE id = 1;",
+      extension.substr(1));
+
+  if (!Client::sendQuery(q)) {
+    std::cerr << "Error incrementing metadata extension.\n";
+    return 1;
+  }
+  return 0;
+}
+
+int Client::decrementExtensionCount(const std::string &extension) {}
+
+int Client::incrementExtensionCount_getcount(const std::string &extension) {}
+int Client::decrementExtensionCount_getcount(const std::string &extension) {}
+int Client::getMetadata() { return 0; };
+
+int Client::dropFileIndex() {
+  if (!Client::sendQuery("DELETE FROM file_index")) {
+    std::cerr << "Error deleting contents from file_index.\n";
+    return 1;
+  } else {
+    std::cout << "file_index deleted.\n";
+  }
+  return 0;
+};
+int Client::dropMetadata() {
+  if (!Client::sendQuery("DELETE FROM file_index_metadata")) {
+    std::cerr << "Error deleting contents from file_index_metadata.\n";
+    return 1;
+  } else {
+    std::cout << "file_index_metadata deleted.\n";
+  }
+  return 0;
+};
+int Client::closeConnection() {
+  sqlite3_close(database);
+  return 0;
+};
 
 Client::~Client() { sqlite3_close(database); }

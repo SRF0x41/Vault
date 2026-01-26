@@ -20,6 +20,13 @@ class Client {
     int dropFileIndex();
     int dropMetadata();
 
+    int incrementExtensionCount(const std::string &extension);
+    int decrementExtensionCount(const std::string &extension);
+
+    int incrementExtensionCount_getcount(const std::string &extension);
+    int decrementExtensionCount_getcount(const std::string &extension);
+
+
     private:
     sqlite3* database = nullptr;
 };

@@ -1,4 +1,5 @@
 #pragma once
+#include "SQlite_Client.h"
 #include <iostream>
 #include <string>
 
@@ -10,5 +11,5 @@ public:
   Indexer();
   ~Indexer();
 
-  void index(const std::string &root_path);
+  void index(const std::string &root_path, Client *client);
 };

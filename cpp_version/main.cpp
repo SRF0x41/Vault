@@ -14,7 +14,7 @@ int main() {
     while(input_line != "exit"){
         std::getline(std::cin, input_line);
         if(input_line == "index"){
-            indexer.index(root_path);
+            indexer.index(root_path, &client);
         }
 
         if(input_line == "test-client"){

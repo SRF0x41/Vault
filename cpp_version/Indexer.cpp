@@ -1,11 +1,12 @@
 #include "Indexer.h"
 #include "FileAnalyzer.h"
+#include "SQlite_Client.h"
 #include <cstddef>
 #include <filesystem>
 #include <iostream>
 Indexer::Indexer() {};
 
-void Indexer::index(const std::string &root_path) {
+void Indexer::index(const std::string &root_path, Client *client) {
   try {
     // Iterate recursively through all files and directories
     for (const auto &entry :
@@ -39,6 +40,34 @@ void Indexer::index(const std::string &root_path) {
 
         std::cout << "FILE PERMISSIONS: "
                   << FileAnalyzer::getPermissions(entry.path()) << '\n';
+
+        // Basic database insertion
+        /*INSERT INTO files (path, size, mode)
+VALUES ('/home/user/test.txt', 1024, 420);*/
+
+        auto escape = [](const std::string &s) {
+          std::string out;
+          out.reserve(s.size());
+          for (char c : s) {
+            if (c == '\'')
+              out += "''"; // SQL escape single quote
+            else
+              out += c;
+          }
+          return out;
+        };
+
+        std::string q = std::format(
+            "INSERT INTO file_index "
+            "(file_name,file_extension,file_path,file_size_bytes,"
+            "file_last_modified,file_permissions) "
+            "VALUES ('{}','{}','{}',{},{},{})",
+            escape(FileAnalyzer::getName(entry.path())),
+            escape(FileAnalyzer::getExt(entry.path())),
+            escape(entry.path().string()), FileAnalyzer::getSize(entry.path()),
+            FileAnalyzer::getLastModifiedUnixTime(entry.path()),
+            FileAnalyzer::getPermissions_int(entry.path()));
+        client->sendQuery(q);
 
         // ====================
         // Parsers

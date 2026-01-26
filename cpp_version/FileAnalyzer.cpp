@@ -64,48 +64,6 @@ std::string FileAnalyzer::getExt(const std::string &path) {
   return std::filesystem::path(path).extension().string();
 }
 
-/*#include <filesystem>
-#include <fstream>
-#include <iostream>
-
-void demo_perms(std::filesystem::perms p)
-{
-    using std::filesystem::perms;
-    auto show = [=](char op, perms perm)
-    {
-        std::cout << (perms::none == (perm & p) ? '-' : op);
-    };
-    show('r', perms::owner_read);
-    show('w', perms::owner_write);
-    show('x', perms::owner_exec);
-    show('r', perms::group_read);
-    show('w', perms::group_write);
-    show('x', perms::group_exec);
-    show('r', perms::others_read);
-    show('w', perms::others_write);
-    show('x', perms::others_exec);
-    std::cout << '\n';
-}
-
-int main()
-{
-    std::ofstream("test.txt"); // create file
-
-    std::cout << "Created file with permissions: ";
-    demo_perms(std::filesystem::status("test.txt").permissions());
-
-    std::filesystem::permissions(
-        "test.txt",
-        std::filesystem::perms::owner_all | std::filesystem::perms::group_all,
-        std::filesystem::perm_options::add
-    );
-
-    std::cout << "After adding u+rwx and g+rwx:  ";
-    demo_perms(std::filesystem::status("test.txt").permissions());
-
-    std::filesystem::remove("test.txt");
-}*/
-
 std::string FileAnalyzer::getPermissions(const std::string &path) {
   std::filesystem::perms perms = std::filesystem::status(path).permissions();
   std::string perms_str;
@@ -124,6 +82,40 @@ std::string FileAnalyzer::getPermissions(const std::string &path) {
   show('x', std::filesystem::perms::others_exec);
 
   return perms_str;
+}
+
+// Ai promptware
+int FileAnalyzer::getPermissions_int(const std::string &path) {
+  namespace fs = std::filesystem;
+
+  fs::perms p = fs::status(path).permissions();
+  int mode = 0;
+
+  // Owner
+  if ((p & fs::perms::owner_read) != fs::perms::none)
+    mode |= 0400;
+  if ((p & fs::perms::owner_write) != fs::perms::none)
+    mode |= 0200;
+  if ((p & fs::perms::owner_exec) != fs::perms::none)
+    mode |= 0100;
+
+  // Group
+  if ((p & fs::perms::group_read) != fs::perms::none)
+    mode |= 0040;
+  if ((p & fs::perms::group_write) != fs::perms::none)
+    mode |= 0020;
+  if ((p & fs::perms::group_exec) != fs::perms::none)
+    mode |= 0010;
+
+  // Others
+  if ((p & fs::perms::others_read) != fs::perms::none)
+    mode |= 0004;
+  if ((p & fs::perms::others_write) != fs::perms::none)
+    mode |= 0002;
+  if ((p & fs::perms::others_exec) != fs::perms::none)
+    mode |= 0001;
+
+  return mode;
 }
 
 long long FileAnalyzer::getLastModifiedUnixTime(const std::string &path) {

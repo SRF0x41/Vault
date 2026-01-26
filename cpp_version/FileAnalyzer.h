@@ -21,6 +21,7 @@ public:
   static std::string getLastModifiedISO(const std::string &path);
   static long long getLastModifiedUnixTime(const std::string &path);
   static std::string getPermissions(const std::string &path);
+  static int getPermissions_int(const std::string &path);
   // These are platform specific
   // static std::string getFirstCreatedISO(const std::string &path);
   // static long long getFirstCreatedUnixTime(const std::string &path);
