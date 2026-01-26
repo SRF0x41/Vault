@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <sqlite3.h>
 #include <string>
 
@@ -25,6 +26,14 @@ class Client {
 
     int incrementExtensionCount_getcount(const std::string &extension);
     int decrementExtensionCount_getcount(const std::string &extension);
+
+    int updateFileName(const std::string &extension);
+    int updateFileExtension(const std::string &extension);
+    int updateFilePath(const std::string &extension);
+    int updateFileSize(const size_t file_size);
+    int updateFileKeywords(const std::string &extension);
+    int updateFileLastModified(const long long unix_time);
+    int updateFilePermissions(const int);
 
 
     private:

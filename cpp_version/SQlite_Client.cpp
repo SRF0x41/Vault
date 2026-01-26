@@ -54,34 +54,19 @@ int Client::sendQuery(const std::string &query) {
   return 0;
 }
 
-int Client::getFileIndexHead() {
-  if (!Client::sendQuery("select * from file_index limit 10;")) {
-    std::cerr << "Error getting file_index head." << '\n';
-    return 1;
-  }
-  return 0;
-}
+/*auto escape = [](const std::string &s) {
+          std::string out;
+          out.reserve(s.size());
+          for (char c : s) {
+            if (c == '\'')
+              out += "''"; // SQL escape single quote
+            else
+              out += c;
+          }
+          return out;
+        };
 
-/*INSERT INTO files (path, size, mode)
-VALUES ('/home/user/test.txt', 1024, 420);
-
-UPDATE table_name
-SET counter = counter + 1
-WHERE id = 1
-RETURNING counter;
-
-*/
-
-int Client::incrementExtensionCount(const std::string &extension) {
-
-  // std::string query = std::format("UPDATE file_index_metadata SET n_{0} =
-  // n_{0} + 1 WHERE id = 1",extension.substr(1));
-
-  //         if (!Client::sendQuery("INSERT INTO file_index_metadata "
-  //                                ""))
-  // SELECT n_txt FROM file_index_metadata WHERE id = 1;
-
-  /*std::string q = std::format(
+        std::string q = std::format(
             "INSERT INTO file_index "
             "(file_name,file_extension,file_path,file_size_bytes,"
             "file_last_modified,file_permissions) "
@@ -91,12 +76,46 @@ int Client::incrementExtensionCount(const std::string &extension) {
             escape(entry.path().string()), FileAnalyzer::getSize(entry.path()),
             FileAnalyzer::getLastModifiedUnixTime(entry.path()),
             FileAnalyzer::getPermissions_int(entry.path()));
-            UPDATE file_index_metadata
-SET n_txt = n_txt + 1
-WHERE id = 1;
-            */
+        client->sendQuery(q);*/
+
+std::string sqlEscape(const std::string &s) {
+  std::string out;
+  out.reserve(s.size());
+  for (char c : s) {
+    if (c == '\'')
+      out += "''"; // SQL escape single quote
+    else
+      out += c;
+  }
+  return out;
+};
+
+int Client::updateFileName(const std::string &extension) {
+  return 0;
+}
+int updateFileExtension(const std::string &extension);
+int updateFilePath(const std::string &extension);
+int updateFileSize(const size_t file_size);
+int updateFileKeywords(const std::string &extension);
+int updateFileLastModified(const long long unix_time);
+int updateFilePermissions(const int);
+
+int Client::getFileIndexHead() {
+  if (!Client::sendQuery("select * from file_index limit 10;")) {
+    std::cerr << "Error getting file_index head." << '\n';
+    return 1;
+  }
+  return 0;
+}
+
+int Client::incrementExtensionCount(const std::string &extension) {
+
+  std::cout << "Extension string size: " << extension.size() << '\n';
+  if (extension.size() == 0) {
+    return 0;
+  }
   std::string q = std::format(
-      "UPDATE file_index_metadata SET n_{} = n_{} + 1 WHERE id = 1;",
+      "UPDATE file_index_metadata SET n_{0} = n_{0} + 1 WHERE id = 1;",
       extension.substr(1));
 
   if (!Client::sendQuery(q)) {
@@ -106,10 +125,14 @@ WHERE id = 1;
   return 0;
 }
 
-int Client::decrementExtensionCount(const std::string &extension) {}
+int Client::decrementExtensionCount(const std::string &extension) { return 0; }
 
-int Client::incrementExtensionCount_getcount(const std::string &extension) {}
-int Client::decrementExtensionCount_getcount(const std::string &extension) {}
+int Client::incrementExtensionCount_getcount(const std::string &extension) {
+  return 0;
+}
+int Client::decrementExtensionCount_getcount(const std::string &extension) {
+  return 0;
+}
 int Client::getMetadata() { return 0; };
 
 int Client::dropFileIndex() {

@@ -69,6 +69,9 @@ VALUES ('/home/user/test.txt', 1024, 420);*/
             FileAnalyzer::getPermissions_int(entry.path()));
         client->sendQuery(q);
 
+        // populate metadata
+        //client->incrementExtensionCount(FileAnalyzer::getExt(entry.path()));
+
         // ====================
         // Parsers
         // ====================
